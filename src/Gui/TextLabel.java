@@ -13,27 +13,17 @@ public class TextLabel extends GuiObject {
 	private String Text;
 	private Font TextFont;
 	private Color TextColor;
-	private Color HighlightColor1;
 	
 	private boolean Clicked = false;
 	private boolean Hovering = false;
 
-	public void SetClicked(boolean value) {
-		Clicked = value;
-	}
-	public void SetHovering(boolean value) {
-		Hovering = value;
-		if (!value) {
-			SetClicked(false);
-		}
-	}
+	public void SetTextColor(Color c) {TextColor = (c == null ? TextColor : c);}
 	
 	public TextLabel(String ItemName, DPair Position, DPair Size, Color GuiColor, GuiObject Parent, String text, int textSize) {
 		super(ItemName, Position, Size, GuiColor, Parent);
 		Text = (text == null ? "TextButton" : text);
 		TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, textSize)));
 		TextColor = Color.WHITE;
-		HighlightColor1 = ColorExtension.Lighten(this.GuiColor, .15);
 	}
 
 	@Override
@@ -47,9 +37,6 @@ public class TextLabel extends GuiObject {
 			g.setColor(GuiColor);
 			g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY);
 
-			g.setColor(HighlightColor1);
-			g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY / 2);
-			
 			g.setFont(TextFont);
 			g.setColor(TextColor);
 			int fontHeight = TextFont.getSize();
