@@ -13,9 +13,11 @@ import javax.swing.JPanel;
 
 public class GuiMain extends JPanel implements MouseListener, MouseMotionListener {
 	private GuiObject Main;
-	private EventInterface EventI;
+	private EventImplementation EventI;
 	private Insets borderWidth;
 	private ArrayList<GuiObject> Buttons;
+	private GuiObject MouseDownTarget;
+	private JFrame Window;
 
 	@Override
 	public void paintComponent(Graphics g) { 
@@ -30,6 +32,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	
 	public GuiMain(String title) {
 		JFrame application = new JFrame();
+		Window = application;
 		application.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Buttons = new ArrayList();
 		
@@ -46,11 +49,12 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		GetTextBoxes(Main);
 	}
 	
-	public void SetMain(GuiObject main) {
-		Main = main;
-		main.SetMain(this);
-	}
+	public void SetMain(GuiObject main) {Main = main; main.SetMain(this);}
 	public GuiObject GetMain() {return Main;}
+	public void SetEventImplementation(EventImplementation e) {EventI = e;}
+	public EventImplementation GetEventImplementation() {return EventI;}
+	public void SetTitle(String name) {Window.setTitle(name);}
+	public String GetTitle() {return Window.getTitle();}
 	
 	public static void main(String[] args) {}
 	
@@ -93,6 +97,12 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		if (hit != null) {
 			((TextButton) hit).SetClicked(false);
 		}
+		if (EventI != null) {
+			EventI.MouseDown(hit, e.getX() - borderWidth.left, e.getY() - borderWidth.top);
+			if (MouseDownTarget != null && MouseDownTarget == hit) {
+				EventI.ButtonClicked(hit, e.getX() - borderWidth.left, e.getY() - borderWidth.top);
+			}
+		}
 		repaint();
 	}
 	@Override
@@ -100,6 +110,10 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		GuiObject hit = GetButtonAtCoordinates(e.getX() - borderWidth.left, e.getY() - borderWidth.top);
 		if (hit != null && hit.getClass().getName().equals("Gui.TextButton")) {
 			((TextButton) hit).SetClicked(true);
+		}
+		MouseDownTarget = hit;
+		if (EventI != null) {
+			EventI.MouseDown(hit, e.getX() - borderWidth.left, e.getY() - borderWidth.top);
 		}
 		repaint();
 	}
@@ -109,7 +123,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	public void mouseMoved(MouseEvent e) {
 		int x = e.getX() - borderWidth.left;
 		int y = e.getY() - borderWidth.top;
-		GuiObject hit;
+		GuiObject hit = null;
 		Iterator<GuiObject> i = Buttons.iterator();
 		while (i.hasNext()) {
 			hit = i.next();
@@ -121,9 +135,14 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 				((TextButton) hit).SetHovering(false);
 			}
 		}
+		if (EventI != null) {
+			EventI.MouseMove(hit, x, y);
+		}
 		repaint();
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {mouseMoved(e);}
 
+	
+	
 }
