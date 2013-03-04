@@ -13,11 +13,16 @@ public class LoginEvents implements Gui.EventImplementation {
 			case "Login":
 				// TODO: Check user's credentials and proceed to the Library page if all is well.
 				System.out.println("Login button clicked.");
+				
+				// If success, then...
+				Driver.SetFrame("Library");
 				break;
 			case "Register":
 				// TODO: Open up new screen and allow user to register.
 				System.out.println("Register button clicked.");
 				break;
+			default:
+				System.out.println("Unidentified item (" + button.getClass().getName() + ") clicked: " + button.GetName());
 		}
 	}
 	@Override
