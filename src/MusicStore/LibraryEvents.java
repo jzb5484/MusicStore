@@ -4,9 +4,7 @@ import Gui.*;
 
 public class LibraryEvents implements Gui.EventImplementation {
 	
-	public LibraryEvents() {
-		
-	}
+	public LibraryEvents() {}
 
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {

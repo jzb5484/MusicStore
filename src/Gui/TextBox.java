@@ -7,7 +7,7 @@ import java.util.Iterator;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-/** Just send me a text if you want any functions added to this.
+/** TextBox is a wrapper for the Java TextField.
  * @author Jackson Burlew
  */
 
@@ -22,7 +22,7 @@ public class TextBox extends GuiObject {
 	public TextBox(String Name, DPair Position, DPair Size, Color GuiColor, GuiObject Parent, String BaseText, int FontSize, Color TextColor) {
 		super(Name, Position, Size, GuiColor, Parent);
 		Text = BaseText;
-		this.TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, FontSize)));;
+		this.TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, FontSize)));
 		this.TextColor = TextColor;
 		if (box != null) {
 			SetUpBox(box);
@@ -45,10 +45,15 @@ public class TextBox extends GuiObject {
 	}
 	
 	public String GetText() {return (box==null ? "" : box.getText());}
-	
-	public void SetPasswordField(boolean value) {
-		PasswordField = value;
-	}
+	public boolean GetPasswordField() {return PasswordField;}
+	public Color GetTextColor() {return TextColor;}
+	public Font GetFont() { return TextFont; }
+
+	public void SetText(String text) {box.setText(text);}
+	public void SetPasswordField(boolean value) { PasswordField = value; }
+	public void SetTextColor(Color textColor) { TextColor = textColor; }
+	public void SetFontSize(int size) {this.TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, size)));}
+	public void SetFont(Font newFont) { TextFont = newFont; }
 	
 	public void Clean(GuiMain main) {
 		main.remove(box);
@@ -60,6 +65,10 @@ public class TextBox extends GuiObject {
 		box.setSelectedTextColor(TextColor);
 	}
 	
+	/** Initialization function for when the text box is added to a GuiMain
+	 * 
+	 * @param main The GuiMain object that the text box is now rendering in.
+	 */
 	public void Init(GuiMain main) {
 		if (PasswordField) {
 			box = new JPasswordField();

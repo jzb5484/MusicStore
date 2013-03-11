@@ -21,6 +21,18 @@ public class LoginEvents implements Gui.EventImplementation {
 				// TODO: Open up new screen and allow user to register.
 				System.out.println("Register button clicked.");
 				break;
+			case "Username":
+				// If the text in the Username text box is "Username" (default), change it when the user clicks.
+				TextBox box = (TextBox) button;
+				if (box.GetText().equals("Username")) {
+					box.SetText("");
+				}
+			case "Password":
+				// If the text in the Username text box is "Username" (default), change it when the user clicks.
+				TextBox passwordBox = (TextBox) button;
+				if (passwordBox.GetText().equals("Password")) {
+					passwordBox.SetText("");
+				}
 			default:
 				System.out.println("Unidentified item (" + button.getClass().getName() + ") clicked: " + button.GetName());
 		}

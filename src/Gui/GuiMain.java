@@ -59,10 +59,11 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	}
 	
 	public void SetMain(GuiObject main) {Main = main; if (main != null) {main.SetMain(this);}}
-	public GuiObject GetMain() {return Main;}
 	public void SetEventImplementation(EventImplementation e) {EventI = e;}
-	public EventImplementation GetEventImplementation() {return EventI;}
 	public void SetTitle(String name) {Window.setTitle(name);}
+
+	public GuiObject GetMain() {return Main;}
+	public EventImplementation GetEventImplementation() {return EventI;}
 	public String GetTitle() {return Window.getTitle();}
 	
 	private void GetTextBoxes(GuiObject Root) {
@@ -170,11 +171,11 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		Iterator<GuiObject> i = Buttons.iterator();
 		while (i.hasNext()) {
 			hit = i.next();
-			if (i instanceof TextButton && x >= hit.GetAbsolutePositionX() && y >= hit.GetAbsolutePositionY() &&
+			if (hit instanceof TextButton && x >= hit.GetAbsolutePositionX() && y >= hit.GetAbsolutePositionY() &&
 					x <= hit.GetAbsolutePositionX() + hit.GetAbsoluteSizeX() &&
 					y <= hit.GetAbsolutePositionY() + hit.GetAbsoluteSizeY()) {
 				((TextButton) hit).SetHovering(true);
-			} else if (i instanceof TextButton) {
+			} else if (hit instanceof TextButton) {
 				((TextButton) hit).SetHovering(false);
 			}
 		}
