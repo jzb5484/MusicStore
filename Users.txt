@@ -1,0 +1,26 @@
+jack
+myPassword
+jackson burlew
+17 Simmons
+10.01
+false
+Purchase History
+Ratings
+anotherUser
+user
+Mr. Bill
+400 Atherton St.
+790.0
+false
+Purchase History
+4
+Ratings
+0
+administrator
+admin
+mr. administrator
+1 Main St.
+45.0
+true
+Purchase History
+Ratings
