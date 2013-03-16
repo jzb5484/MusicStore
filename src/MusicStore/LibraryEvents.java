@@ -7,6 +7,8 @@ public class LibraryEvents implements Gui.EventImplementation {
 
 	public GuiObject MainFrame;
 	private ScrollBar LibScroll;
+	private TextLabel AccountCredit;
+	private Frame CenterScrollFrame;
 
 	public final void MakeElements() {
 		Color ColorScheme = Driver.ColorScheme;
@@ -22,8 +24,11 @@ public class LibraryEvents implements Gui.EventImplementation {
 		new TextButton("ViewFilms", new DPair(0, 18, 0, 156), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Films", 14);
 		new TextButton("Sort", new DPair(0, 18, 0, 186), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Sort...", 14);
 		new TextButton("ManagementButton", new DPair(0, 0, 0, 216), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Mgmt Tools", 18);
-		new TextLabel("AccountCredit", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Credit: $25.00", 14);
-		LibScroll = new ScrollBar("Scroll", new DPair(1, -30, 0, 10), new DPair(0, 20, 1, -20), ColorScheme, MainFrame, 1000, 100);
+		AccountCredit = new TextLabel("AccountCredit", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Credit: $25.00", 14);
+		CenterScrollFrame = new Frame("CenterFrame", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 50, 1, -20), Color.RED, MainFrame);
+		int WindowHeight = Driver.GetGuiMain().GetWindow().getSize().height;
+		
+		LibScroll = new ScrollBar("Scroll", new DPair(1, -30, 0, 10), new DPair(0, 20, 1, -20), ColorScheme, MainFrame, 0, WindowHeight);
 	}
 	
 	public LibraryEvents() {

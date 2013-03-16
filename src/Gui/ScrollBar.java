@@ -13,11 +13,16 @@ public class ScrollBar extends GuiObject {
 	private float CurrentValue;
 	private float MaxValue;
 	private float FrameSize;
+	
+	private int BarSizeY;
+	private int BarPosY;
 
 	public final float GetValue() {return CurrentValue; }
 	public final float GetProportion() {return CurrentValue / MaxValue;}
 	public final float GetMax() {return MaxValue;}
 	public final float GetFrameSize() {return FrameSize;}
+	public final int GetAbsoluteBarSizeY() {return BarSizeY;}
+	public final int GetAbsoluteBarPositionY() {return BarPosY;}
 	public final void SetValue(float val) {CurrentValue = Math.max(0, Math.min(MaxValue, val)); if (Main != null) {Main.repaint();}}
 	public final void SetMax(float max) {MaxValue = max; if (Main != null) {Main.repaint();}}
 	public final void SetFrameSize(float newSize) {FrameSize = newSize; if (Main != null) {Main.repaint();}}
@@ -43,9 +48,11 @@ public class ScrollBar extends GuiObject {
 			g.setColor(GuiColor);
 			
 			if (MaxValue != 0) {
-				g.fillRect(AbsolutePositionX, AbsolutePositionY + (int) (CurrentValue / MaxValue * AbsoluteSizeY
-						* (1 - (FrameSize) / (MaxValue + FrameSize))), AbsoluteSizeX, (int) (AbsoluteSizeY *
-						(FrameSize) / (MaxValue + FrameSize)));
+				BarPosY = AbsolutePositionY + (int) (CurrentValue / MaxValue * AbsoluteSizeY * (1 - (FrameSize) / (MaxValue + FrameSize)));
+				BarSizeY = (int) (AbsoluteSizeY * (FrameSize) / (MaxValue + FrameSize));
+				g.fillRect(AbsolutePositionX, BarPosY, AbsoluteSizeX, BarSizeY);
+			} else {
+				g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY);
 			}
 		}
 	}

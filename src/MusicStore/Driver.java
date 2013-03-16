@@ -22,6 +22,8 @@ public class Driver {
 	private static Frame LibraryFrame;
 	private static EventImplementation LibraryEventsObj;
 	
+	public static GuiMain GetGuiMain() {return Main;}
+	
 	private static void EstablishLogin() {
 		LoginEventsObj = new LoginEvents();
 		LoginFrame = (Frame) ((LoginEvents) LoginEventsObj).MainFrame;

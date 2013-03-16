@@ -10,14 +10,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class GuiMain extends JPanel implements MouseListener, MouseMotionListener {
 	private GuiObject Main;
 	private EventImplementation EventI;
 	private Insets borderWidth;
 	private GuiObject MouseDownTarget;
+	private int DragOffsetY;
+	private float OriginalScrollValue;
 	private JFrame Window;
+	
 
 	private ArrayList<GuiObject> Buttons;
 //	private ArrayList<GuiObject> TextBoxes;
@@ -63,17 +65,19 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	public void SetTitle(String name) {Window.setTitle(name);}
 
 	public GuiObject GetMain() {return Main;}
+	public JFrame GetWindow() {return Window;}
 	public EventImplementation GetEventImplementation() {return EventI;}
 	public String GetTitle() {return Window.getTitle();}
 	
 	private void GetTextBoxes(GuiObject Root) {
 		if (Root == null) { return; }
-		if (Root.getClass().getName().equals("Gui.TextButton") && !Buttons.contains(Root)) {
+		if (Root instanceof TextButton && !Buttons.contains(Root)) {
 			this.Buttons.add(Root);
-		} else if (Root.getClass().getName().equals("Gui.TextBox")) {
-//			this.TextBoxes.add(Root);
+		} else if (Root instanceof TextBox) {
 			this.Buttons.add(Root);
 			((TextBox) Root).Init(this);
+		} else if (Root instanceof ScrollBar) {
+			this.Buttons.add(Root);
 		}
 		Iterator<GuiObject> i = Root.GetChildren();
 		while (i.hasNext()) {
@@ -81,13 +85,11 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		}
 	}
 	public void GetTextBoxes() {
-		//Buttons.clear();
 		for (GuiObject i : Buttons) {
 			if (i instanceof TextBox) {
 				((TextBox) i).Clean(this);
 			}
 		}
-		//TextBoxes.clear();
 		Buttons.clear();
 		GetTextBoxes(Main);
 	}
@@ -131,6 +133,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 				EventI.ButtonClicked(hit, e.getX() - borderWidth.left, e.getY() - borderWidth.top);
 			}
 		}
+		MouseDownTarget = null;
 		repaint();
 	}
 	@Override
@@ -145,8 +148,19 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 			y -= borderWidth.top;
 		}
 		GuiObject hit = GetButtonAtCoordinates(x, y);
-		if (hit != null && hit.getClass().getName().equals("Gui.TextButton")) {
+		if (hit != null && hit instanceof TextButton) {
 			((TextButton) hit).SetClicked(true);
+		} else if (hit != null && hit instanceof ScrollBar) {
+			ScrollBar scroll = ((ScrollBar) hit);
+			int yOffset = y - scroll.GetAbsoluteBarPositionY();
+			if (yOffset > 0 && yOffset < scroll.GetAbsoluteBarSizeY()) {
+				DragOffsetY = y;
+				OriginalScrollValue = scroll.GetValue();
+			} else if (yOffset < 0) {
+				scroll.SetValue(scroll.GetValue() - scroll.GetFrameSize());
+			} else { // When clicking below the bar.
+				scroll.SetValue(scroll.GetValue() + scroll.GetFrameSize());
+			}
 		}
 		MouseDownTarget = hit;
 		if (EventI != null) {
@@ -181,6 +195,11 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 			} else if (hit instanceof TextButton) {
 				((TextButton) hit).SetHovering(false);
 			}
+		}
+		if (MouseDownTarget != null && MouseDownTarget instanceof ScrollBar) {
+			ScrollBar targ = (ScrollBar) MouseDownTarget;
+			float change = (float) (y - DragOffsetY) / (float) (targ.GetAbsoluteSizeY() - targ.GetAbsoluteBarSizeY()) * targ.GetMax();
+			targ.SetValue(OriginalScrollValue + change);
 		}
 		repaint();
 	}
