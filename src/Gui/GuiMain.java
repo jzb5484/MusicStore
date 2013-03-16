@@ -175,12 +175,12 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 					x <= hit.GetAbsolutePositionX() + hit.GetAbsoluteSizeX() &&
 					y <= hit.GetAbsolutePositionY() + hit.GetAbsoluteSizeY()) {
 				((TextButton) hit).SetHovering(true);
+				if (EventI != null) {
+					EventI.MouseMove(hit, x, y);
+				}
 			} else if (hit instanceof TextButton) {
 				((TextButton) hit).SetHovering(false);
 			}
-		}
-		if (EventI != null) {
-			EventI.MouseMove(hit, x, y);
 		}
 		repaint();
 	}

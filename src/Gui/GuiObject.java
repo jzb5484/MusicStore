@@ -30,19 +30,20 @@ public class GuiObject {
 	// Can't be obtained in any form outside of this class.
 	protected GuiMain Main;
 
-	public void SetPosition(DPair p) {if (p != null) {Position = p;}}
-	public DPair GetPosition() {return Position;}
-	public void SetSize(DPair s) {if (s != null) {Size = s;}}
-	public DPair GetSize() {return Size;}
-	public void SetColor(Color c) {if (c != null) {GuiColor = c;}}
-	public Color GetColor() {return GuiColor;}
-	public void SetName(String n) {if (n != null) {Name = n;}}
 	public String GetName() {return Name;}
+	public DPair GetPosition() {return Position;}
+	public DPair GetSize() {return Size;}
+	public Color GetColor() {return GuiColor;}
+	public GuiMain GetMain() {return Main;}
+	public void SetName(String n) {if (n != null) {Name = n;}}
+	public void SetPosition(DPair p) {if (p != null) {Position = p;}}
+	public void SetSize(DPair s) {if (s != null) {Size = s;}}
+	public void SetColor(Color c) {if (c != null) {GuiColor = c;}}
 	public void SetMain(GuiMain main) {
 		Main = main;
 		// Call setMain on all children.
-//		Iterator<GuiObject> i = GetChildren();
-//		while (i.hasNext()) {i.next().SetMain(main);}
+		Iterator<GuiObject> i = GetChildren();
+		while (i.hasNext()) {i.next().SetMain(main);}
 	}
 	
 	public GuiObject GetParent() {return Parent;}

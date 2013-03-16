@@ -1,11 +1,30 @@
 package MusicStore;
 
 import Gui.*;
+import java.awt.Color;
 
 public class LoginEvents implements Gui.EventImplementation {
 	
-	public LoginEvents() {
+	public GuiObject MainFrame;
+
+	public final void MakeElements() {
+		MainFrame = new Frame("MainLogin", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(Driver.ColorScheme, 1), null);
+		Frame leftPanel = new Frame("LeftPanel", new DPair(0, 0, 0, 0), new DPair(0, 150, 1, 0), Color.WHITE, MainFrame);
+		new Frame("Stripe1", new DPair(0, 0, 0, 0), new DPair(0, 60, 1, 0), ColorExtension.Lighten(Driver.ColorScheme, .7), MainFrame);
+		new Frame("Stripe2", new DPair(0, 72, 0, 0), new DPair(0, 6, 1, 0), ColorExtension.Lighten(Driver.ColorScheme, .7), MainFrame);
+		new Frame("Stripe3", new DPair(0, leftPanel.GetSize().xOffset - 18, 0, 0), new DPair(0, 18, 1, 0), ColorExtension.Lighten(Driver.ColorScheme, .7), MainFrame);
+		new TextButton("Register", new DPair(0, 0, 0, 10), new DPair(0, 240, 0, 24), Driver.ColorScheme, MainFrame, "Register a New Account", 16);
+		Frame LoginPanel = new Frame("LoginPanel", new DPair(0.5, -120, 0.5, -54), new DPair(0, 240, 0, 108), Driver.ColorScheme, MainFrame);
+		new Frame("LoginPanelStripe", new DPair(0, 0, 0, 0), new DPair(1, 0, 0.5, 0), ColorExtension.Lighten(Driver.ColorScheme, .1), LoginPanel);
+		new TextButton("Login", new DPair(0, 0, 1, 10), new DPair(1, 0, 0, 24), Driver.ColorScheme, LoginPanel, "Login", 16);
 		
+		new TextLabel("Desc", new DPair(0, 5, 0, 0), new DPair(1, -10, 0.333, -5), new Color(0, 0, 0, 0), LoginPanel, "Login", 14);
+		TextBox username = new TextBox("Username", new DPair(0, 5, .333, 0), new DPair(1, -10, 0.333, -5), Color.WHITE, LoginPanel, "Username", 14, new Color(0,0,0));
+		TextBox password = new TextBox("Password", new DPair(0, 5, .666, 0), new DPair(1, -10, 0.333, -5), Color.WHITE, LoginPanel, "Password", 14, new Color(0,0,0));
+		password.SetPasswordField(true);
+	}
+	public LoginEvents() {
+		MakeElements();
 	}
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
