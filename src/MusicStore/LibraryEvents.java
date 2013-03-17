@@ -25,10 +25,19 @@ public class LibraryEvents implements Gui.EventImplementation {
 		new TextButton("Sort", new DPair(0, 18, 0, 186), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Sort...", 14);
 		new TextButton("ManagementButton", new DPair(0, 0, 0, 216), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Mgmt Tools", 18);
 		AccountCredit = new TextLabel("AccountCredit", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Credit: $25.00", 14);
-		CenterScrollFrame = new Frame("CenterFrame", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 50, 1, -20), Color.RED, MainFrame);
+		CenterScrollFrame = new Frame("CenterFrame", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 50, 1, -20), Color.WHITE, MainFrame);
 		int WindowHeight = Driver.GetGuiMain().GetWindow().getSize().height;
-		
 		LibScroll = new ScrollBar("Scroll", new DPair(1, -30, 0, 10), new DPair(0, 20, 1, -20), ColorScheme, MainFrame, 0, WindowHeight);
+		new CheckBox("CheckBox1", new DPair(0, 5, 0, 5), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Button1", 14);
+		new CheckBox("CheckBox2", new DPair(.2, 4, 0, 5), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Button2", 14);
+		new CheckBox("CheckBox3", new DPair(.4, 3, 0, 5), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Button3", 14);
+		new CheckBox("CheckBox4", new DPair(.6, 2, 0, 5), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Button4", 14);
+		new CheckBox("CheckBox5", new DPair(.8, 1, 0, 5), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Button5", 14);
+		new RadioButton("Radio1", new DPair(0, 5, 0, 40), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Radio1", 14);
+		new RadioButton("Radio2", new DPair(.2, 4, 0, 40), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Radio2", 14);
+		new RadioButton("Radio3", new DPair(.4, 3, 0, 40), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Radio3", 14);
+		new RadioButton("Radio4", new DPair(.6, 2, 0, 40), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Radio4", 14);
+		new RadioButton("Radio5", new DPair(.8, 1, 0, 40), new DPair(.2, -6, 0, 30), ColorScheme, CenterScrollFrame, "Radio5", 14);
 	}
 	
 	public LibraryEvents() {

@@ -78,6 +78,10 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 			((TextBox) Root).Init(this);
 		} else if (Root instanceof ScrollBar) {
 			this.Buttons.add(Root);
+		} else if (Root instanceof CheckBox) {
+			Buttons.add(Root);
+		} else if (Root instanceof RadioButton) {
+			Buttons.add(Root);
 		}
 		Iterator<GuiObject> i = Root.GetChildren();
 		while (i.hasNext()) {
@@ -161,6 +165,10 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 			} else { // When clicking below the bar.
 				scroll.SetValue(scroll.GetValue() + scroll.GetFrameSize());
 			}
+		} else if (hit != null && hit instanceof CheckBox) {
+			((CheckBox) hit).SetSelected(!((CheckBox) hit).GetSelected());
+		} else if (hit != null && hit instanceof RadioButton) {
+			((RadioButton) hit).SetSelected(true);
 		}
 		MouseDownTarget = hit;
 		if (EventI != null) {
