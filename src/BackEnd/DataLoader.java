@@ -23,11 +23,6 @@ public class DataLoader {
 	public static ArrayList<Album> getAlbums() {if (!UpdatedList) {UpdateLists();}return albumSet;}
 	public static ArrayList<Audiobook> getAudiobooks() {if (!UpdatedList) {UpdateLists();}return audiobookSet;}
 	
-	
-	public static int getUserCount() {
-		return users.size();
-	}
-	
 	private static void UpdateLists() {
 		Iterator<Integer> i = itemSet.keySet().iterator();
 		while (i.hasNext()) {
@@ -78,21 +73,18 @@ public class DataLoader {
 				lastUsedId = Math.max(lastUsedId, input.nextInt());
 				input.skip("\n");
 				if("Album".equals(className)) {
-					System.out.println("Adding album: " + name + " by " + creator);
 					Album newAlbum = new Album();
 					newAlbum.dataLoaderInit(id, name, yearOfRelease, duration, genre,
 							preview, numSold, price, hidden, cumulativeRating,
 							numRatings, creator, totalNumberSold, lastUsedId);
 					itemSet.put(id, newAlbum);
 				} else if("Audiobook".equals(className)) {
-					System.out.println("Adding audiobook: " + name + " by " + creator);
 					Audiobook newAudio = new Audiobook();
 					newAudio.dataLoaderInit(id, name, yearOfRelease, duration, genre,
 							preview, numSold, price, hidden, cumulativeRating,
 							numRatings, creator, totalNumberSold, lastUsedId);
 					itemSet.put(id, newAudio);
 				} else if("Film".equals(className)) {
-					System.out.println("Adding film: " + name + " by " + creator);
 					Film newFilm = new Film();
 					newFilm.dataLoaderInit(id, name, yearOfRelease, duration, genre,
 							preview, numSold, price, hidden, cumulativeRating,
@@ -149,14 +141,7 @@ public class DataLoader {
 				Iterator<Integer> i = iterableSet.iterator();
 				while (i.hasNext()) {
 					Item x = set.get(i.next());
-					if (x instanceof Album) {
-						outfile.write("Album");
-					} else if (x instanceof Audiobook) {
-						outfile.write("Audiobook");
-					} else {
-						outfile.write("Film");
-					}
-					outfile.write("\n");
+					outfile.write("Album\n");
 					outfile.write("" + x.getId() + "\n");
 					outfile.write(x.getName() + "\n");
 					outfile.write("" + x.getYearOfRelease() + "\n");
