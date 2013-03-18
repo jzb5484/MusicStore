@@ -23,6 +23,11 @@ public class DataLoader {
 	public static ArrayList<Album> getAlbums() {if (!UpdatedList) {UpdateLists();}return albumSet;}
 	public static ArrayList<Audiobook> getAudiobooks() {if (!UpdatedList) {UpdateLists();}return audiobookSet;}
 	
+	
+	public static int getUserCount() {
+		return users.size();
+	}
+	
 	private static void UpdateLists() {
 		Iterator<Integer> i = itemSet.keySet().iterator();
 		while (i.hasNext()) {
