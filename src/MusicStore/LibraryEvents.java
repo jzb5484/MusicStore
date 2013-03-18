@@ -4,7 +4,6 @@ import BackEnd.*;
 import Gui.*;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class LibraryEvents implements Gui.EventImplementation {
 
@@ -53,42 +52,73 @@ public class LibraryEvents implements Gui.EventImplementation {
 		TextLabel rowOne;
 		TextLabel rowTwo;
 		int MaximumIndex = 0;
+		ArrayList ActiveList = null;
 		switch (CurrentList) {
 			case 0:
-				MaximumIndex = Driver.CurrentUser.getPurchaseHistory().size();
+				ActiveList = Driver.CurrentUser.getPurchaseHistory();
 				break;
 			case 1:
-				MaximumIndex = DataLoader.getAlbums().size();
+				ActiveList = DataLoader.getAlbums();
 				break;
 			case 2:
-				MaximumIndex = DataLoader.getAudiobooks().size();
+				ActiveList = DataLoader.getAudiobooks();
 				break;
 			case 3:
-				MaximumIndex = DataLoader.getFilm().size();
+				ActiveList = DataLoader.getFilm();
 				break;
 		}
+		MaximumIndex = ActiveList.size();
 		PixelOffset = (int) LibScroll.GetValue();
 		ViewIndex = (int) Math.floor((double) PixelOffset / 40);
+		
 		for (int i = 0; i < ScrollList.size(); i++) {
 			current = ScrollList.get(i);
 			rowOne = (TextLabel) current.GetChild("TopText");
 			rowTwo = (TextLabel) current.GetChild("BottomText");
 			current.GetPosition().yOffset = i * 40 - PixelOffset % 40;
-//			current.SetColor(ColorExtension.Lighten(Driver.ColorScheme, Math.abs(Math.sin((double) (i + ViewIndex) / 13.0))));
-			
-			if (CurrentList == 0 && Driver.CurrentUser != null) {
-				Item currentItem = DataLoader.getItemById(((Integer)Driver.CurrentUser.getPurchaseHistory().get(i + ViewIndex)).intValue());
-				rowOne.SetText("Artist: " + currentItem.getCreator());
-				rowTwo.SetText("Album: " + currentItem.getName());
-			} else if (CurrentList == 1) {
-				System.out.println(DataLoader.getAlbums());
-				Item currentItem = DataLoader.getAlbums().get(i + ViewIndex);
-				if (currentItem != null) {
-					rowOne.SetText("Artist: " + currentItem.getCreator());
-					rowTwo.SetText("Album: " + currentItem.getName());
-				} else {
-					rowOne.SetText("");
-					rowTwo.SetText("");
+			if (i + ViewIndex >= MaximumIndex) {
+				CenterScrollFrame.RemoveChild(current);
+			} else {
+				CenterScrollFrame.AddChild(current);
+				if (CurrentList == 0 && Driver.CurrentUser != null) {
+					Item currentItem = DataLoader.getItemById(((Integer)Driver.CurrentUser.getPurchaseHistory().get(i + ViewIndex)).intValue());
+					if (currentItem instanceof Album) {
+						rowOne.SetText("Artist: " + currentItem.getCreator() + "    Album: " + currentItem.getName());
+						rowTwo.SetText("Genre: " + currentItem.getGenre() + "    Rating: " + currentItem.getRating() + "    Cost: " + currentItem.getPrice());
+					} else if (currentItem instanceof Audiobook) {
+						rowOne.SetText("Title: " + currentItem.getName() + "    Author: " + currentItem.getCreator());
+						rowTwo.SetText("Genre: " + currentItem.getGenre() + "    Rating: " + currentItem.getRating() + "    Cost: " + currentItem.getPrice());
+					} else if (currentItem instanceof Film) {
+						rowOne.SetText("Title: " + currentItem.getName() + "    Producer: " + currentItem.getCreator());
+						rowTwo.SetText("Genre: " + currentItem.getGenre() + "    Rating: " + currentItem.getRating() + "    Cost: " + currentItem.getPrice());
+					}
+				} else if (CurrentList == 1) {
+					Item currentItem = (Item) ActiveList.get(i + ViewIndex);
+					if (currentItem != null) {
+						rowOne.SetText("Artist: " + currentItem.getCreator() + "    Album: " + currentItem.getName());
+						rowTwo.SetText("Genre: " + currentItem.getGenre() + "    Rating: " + currentItem.getRating() + "    Cost: " + currentItem.getPrice());
+					} else {
+						rowOne.SetText("");
+						rowTwo.SetText("");
+					}
+				} else if (CurrentList == 2) {
+					Item currentItem = (Item) ActiveList.get(i + ViewIndex);
+					if (currentItem != null) {
+						rowOne.SetText("Title: " + currentItem.getName() + "    Author: " + currentItem.getCreator());
+						rowTwo.SetText("Genre: " + currentItem.getGenre() + "    Rating: " + currentItem.getRating() + "    Cost: " + currentItem.getPrice());
+					} else {
+						rowOne.SetText("");
+						rowTwo.SetText("");
+					}
+				} else if (CurrentList == 3) {
+					Item currentItem = (Item) ActiveList.get(i + ViewIndex);
+					if (currentItem != null) {
+						rowOne.SetText("Title: " + currentItem.getName() + "    Producer: " + currentItem.getCreator());
+						rowTwo.SetText("Genre: " + currentItem.getGenre() + "    Rating: " + currentItem.getRating() + "    Cost: " + currentItem.getPrice());
+					} else {
+						rowOne.SetText("");
+						rowTwo.SetText("");
+					}
 				}
 			}
 			//().SetText("This represents index: " + (i + ViewIndex));

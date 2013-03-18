@@ -45,7 +45,6 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		Window = application;
 		application.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Buttons = new ArrayList();
-//		TextBoxes = new ArrayList();
 		
 		application.setTitle(title);
 		application.add(this);

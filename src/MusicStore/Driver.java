@@ -9,20 +9,33 @@
 
 package MusicStore;
 
+import BackEnd.DataLoader;
+import BackEnd.User;
 import Gui.*;
 import java.awt.Color;
-import BackEnd.*;
 
 public class Driver {
 	public static Color ColorScheme = //ColorExtension.RandomBelow(200);
 	new Color(19, 79, 92);
 
 	private static GuiMain Main;
+	//creates the login frame
 	private static Frame LoginFrame;
+	//creates the event listeners for the login frame
 	private static EventImplementation LoginEventsObj;
+	//creates the libaray frame
 	private static Frame LibraryFrame;
+	//creats the event listeners for the libaray frame
 	private static EventImplementation LibraryEventsObj;
-	
+	//creates the frame for the manager tools
+	private static Frame ManagementFrame;
+	//creates the event listeners for the management tools
+	private static EventImplementation ManagementEventsObj;
+	//creates the registeration frame
+	private static Frame RegisterFrame;
+	//creates the events listeners for the registation frame
+	private static EventImplementation RegisterEventsObj;
+	//create the User for the current user that is logged in
 	public static User CurrentUser;
 	
 	public static GuiMain GetGuiMain() {return Main;}
@@ -37,10 +50,19 @@ public class Driver {
 		LibraryFrame = (Frame) ((LibraryEvents) LibraryEventsObj).MainFrame;
 	}
 	
+	public static void EstablishManagement() {
+		ManagementEventsObj = new ManagementEvents();
+		ManagementFrame = (Frame) ((ManagementEvents) ManagementEventsObj).MainFrame;
+	}
+	
+	 public static void EstablishRegister() {
+		RegisterEventsObj = new RegisterEvents();
+		RegisterFrame = (Frame) ((RegisterEvents) RegisterEventsObj).MainFrame;
+	}
+	
 	public static void SetFrame(String s) {
 		switch(s) {
 			case "Login":
-				// System.out.println("L")
 				Main.SetMain(LoginFrame);
 				Main.SetEventImplementation(LoginEventsObj);
 				Main.SetTitle("Login");
@@ -50,10 +72,25 @@ public class Driver {
 				Main.SetEventImplementation(LibraryEventsObj);
 				Main.SetTitle("Library");
 				break;
+			//if the management frame needs to be set
 			case "Management":
-				Main.SetMain(null);
-				Main.SetEventImplementation(null);
+			EstablishManagement();
+			//set the current frame tot he manager
+				Main.SetMain(ManagementFrame);
+				//sets the current object listeners to the manager
+				Main.SetEventImplementation(ManagementEventsObj);
+				//set the title ot the manager
 				Main.SetTitle("Administrative Tools");
+			break;
+			//if the resgistation frame needs to be set
+			case "Register":
+				EstablishRegister();
+				//set the current frame tot he manager
+				Main.SetMain(RegisterFrame);
+				//sets the current object listeners to the registation
+				Main.SetEventImplementation(RegisterEventsObj);
+				//set the title ot the registation 
+				Main.SetTitle("Register User");
 		}
 		Main.GetTextBoxes();
 	}
@@ -63,7 +100,17 @@ public class Driver {
 		Main = new GuiMain("Login Screen");
 		EstablishLogin();
 		EstablishLibrary();
+		EstablishManagement();
+		EstablishRegister();
 
 		SetFrame("Login");
+				
+		Main.GetWindow().addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent winEvt) {
+				DataLoader.saveToFile();
+				System.exit(0); 
+			}
+		});
 	}
 }
