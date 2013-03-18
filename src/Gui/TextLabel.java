@@ -18,6 +18,11 @@ public class TextLabel extends GuiObject {
 	private boolean Hovering = false;
 
 	public void SetTextColor(Color c) {TextColor = (c == null ? TextColor : c);}
+	public void SetText(String text) {Text = text;}
+	public void SetFont(Font f) {TextFont = f;}
+	public Color GetTextColor() {return TextColor;}
+	public String GetText() {return Text;}
+	public Font GetFont() {return TextFont;}
 	
 	public TextLabel(String ItemName, DPair Position, DPair Size, Color GuiColor, GuiObject Parent, String text, int textSize) {
 		super(ItemName, Position, Size, GuiColor, Parent);

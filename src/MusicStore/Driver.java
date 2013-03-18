@@ -11,6 +11,7 @@ package MusicStore;
 
 import Gui.*;
 import java.awt.Color;
+import BackEnd.*;
 
 public class Driver {
 	public static Color ColorScheme = //ColorExtension.RandomBelow(200);
@@ -21,6 +22,8 @@ public class Driver {
 	private static EventImplementation LoginEventsObj;
 	private static Frame LibraryFrame;
 	private static EventImplementation LibraryEventsObj;
+	
+	public static User CurrentUser;
 	
 	public static GuiMain GetGuiMain() {return Main;}
 	
@@ -56,6 +59,7 @@ public class Driver {
 	}
 	
 	public static void main(String[] args) {
+		DataLoader.loadFromFile();
 		Main = new GuiMain("Login Screen");
 		EstablishLogin();
 		EstablishLibrary();

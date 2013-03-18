@@ -209,6 +209,9 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 			float change = (float) (y - DragOffsetY) / (float) (targ.GetAbsoluteSizeY() - targ.GetAbsoluteBarSizeY()) * targ.GetMax();
 			targ.SetValue(OriginalScrollValue + change);
 		}
+		if (EventI != null) {
+			EventI.MouseMove(null, x, y);
+		}
 		repaint();
 	}
 	@Override
