@@ -98,6 +98,7 @@ public class Driver {
 	public static void main(String[] args) {
                 DataLoader.loadFromFile();
 		Main = new GuiMain("Login Screen");
+		Main.GetWindow().setSize(800, 500);
 		EstablishLogin();
 		EstablishLibrary();
                 EstablishManagement();

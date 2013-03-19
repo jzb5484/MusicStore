@@ -116,6 +116,6 @@ public class Album extends Item
     //POST: the album as a string is returned
   
     return "Album:     " + name + " by " + creator + " (genre " + genre + ", year of release: " + yearOfRelease + ").\n" + 
-	    "           Duration: " + getHour() + ":" + getMinute() + ":" + getSecond() + ", Popularity: " + getPopularity() + ", average rating: " + getRating();
+	    "           Duration: " + getHour() + ":" + getMinute() + ":" + getSecond() + ", Popularity: " + getPopularity() + ", average rating: " + String.format("Range = %.2f", getRating());
   }
 }

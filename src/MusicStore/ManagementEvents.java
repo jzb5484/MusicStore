@@ -20,7 +20,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 	private int numberOfItemPages = 0;
 	private int numberOfItemsRemain = 0;
 	private int numberOfItemsOnPage = 0;
-	private int numberItemsPerPage = 1;
+	private final int NUMBER_ITEMS_PER_PAGE = 2;
 	private int nextRow = 20;
 	private final int ROW_SPACING = 50;
 	private Frame leftPanel;
@@ -39,10 +39,9 @@ public class ManagementEvents implements Gui.EventImplementation {
 		new Frame("Stripe1", new DPair(0, 0, 0, 0), new DPair(0, 60, 1, 0), ColorExtension.Lighten(ColorScheme, .7), leftPanel);
 		new Frame("Stripe2", new DPair(0, 72, 0, 0), new DPair(0, 6, 1, 0), ColorExtension.Lighten(ColorScheme, .7), leftPanel);
 		new Frame("Stripe3", new DPair(1, -18, 0, 0), new DPair(0, 18, 1, 0), ColorExtension.Lighten(ColorScheme, .7), leftPanel);
-		new TextButton("ItemStats", new DPair(0, 0, 0, 12), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Item Stats", 14);
+		new TextButton("ItemStats", new DPair(0, 0, 0, 12), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Item Stats/Change Items", 10);
 		new TextButton("Accounts", new DPair(0, 0, 0, 54), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "User Accounts", 14);
 		new TextButton("AddItems", new DPair(0, 0, 0, 96), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Add Items", 14);
-		new TextButton("ChangeItems", new DPair(0, 0, 0, 138), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Store", 14);
 		new TextButton("BackToLibaray", new DPair(0, 0, 0, 222), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Back To Libaray", 14);
 		new TextLabel("Total sales", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Sales: $" + DataLoader.getSales(), 14);
 
@@ -53,44 +52,61 @@ public class ManagementEvents implements Gui.EventImplementation {
 	}
 
 	private void GenerateItemStat() {
+		if (ItemStatsPanel != null) {
+			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
+		}
 		ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
-		while (numberOfItemsOnPage < numberItemsPerPage && numberOfItemsRemain > 0) {
-			System.out.println(Math.abs(numberOfItemsRemain - numberOfItems));
+		while (numberOfItemsOnPage < NUMBER_ITEMS_PER_PAGE && numberOfItemsRemain > 0) {
 			currentItem = DataLoader.getItemById(Math.abs(numberOfItemsRemain - numberOfItems) + 1);
-			Driver.GetGuiMain().GetWindow().setSize(currentItem.toString().length() * 10, Driver.GetGuiMain().GetWindow().getSize().height);
-			new TextLabel("Items", new DPair(0, 150, 0, nextRow), new DPair(currentItem.toString().length() * 0.005, 0, 0.09, 0), ColorScheme, ItemStatsPanel, currentItem.toString(), 14);
+			new TextLabel("Items", new DPair(0, 20, 0, nextRow), new DPair(0.6, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
+					currentItem.toString().substring(0, currentItem.toString().indexOf('(')), 14);
+			nextRow = nextRow + ROW_SPACING;
+			new TextLabel("Items", new DPair(0, 30, 0, nextRow), new DPair(0.9, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
+					currentItem.toString().substring(currentItem.toString().indexOf('('),currentItem.toString().indexOf(')')+1), 14);
+			nextRow = nextRow + ROW_SPACING;
+			new TextLabel("Items", new DPair(0, 30, 0, nextRow), new DPair(0.9, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
+					currentItem.toString().substring(currentItem.toString().indexOf(')') + 4), 14);
+			nextRow = nextRow + ROW_SPACING;
 			numberOfItemsOnPage++;
 			numberOfItemsRemain--;
-			nextRow = nextRow + ROW_SPACING;
 		}
-		if (pageNum != 0) {
+		if (pageNum != 1) {
+			if (back != null) {
+				back.GetParent().RemoveChild(back);
+			}
 			back = new TextButton("Back", new DPair(0, 40, 0, Driver.GetGuiMain().GetWindow().getSize().height - 150), new DPair(0.15, 0, 0.09, 0), ColorScheme, ItemStatsPanel, "Back", 14);
 			caller = "GenerateItemStat";
 		}
-		if (pageNum != numberOfItemPages - 1) {
+		if (pageNum != numberOfItemPages-1) {
+			if (next != null) {
+				next.GetParent().RemoveChild(next);
+			}
 			next = new TextButton("Next", new DPair(0, Driver.GetGuiMain().GetWindow().getSize().width - 450, 0, Driver.GetGuiMain().GetWindow().getSize().height - 150), new DPair(0.15, 0, 0.09, 0), ColorScheme, ItemStatsPanel, "Next", 14);
 			caller = "GenerateItemStat";
 		}
-		pageNum++;
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 
 	private void GenerateUserStat() {
+		if (UserStatsPanel != null) {
+			UserStatsPanel.GetParent().RemoveChild(UserStatsPanel);
+		}
 		UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
-		while (numberOfItemsOnPage < numberItemsPerPage && numberOfItemsRemain > 0) {
-			System.out.println(Math.abs(numberOfItemsRemain - numberOfItems));
+		while (numberOfItemsOnPage < NUMBER_ITEMS_PER_PAGE && numberOfItemsRemain > 0) {
 			currentItem = DataLoader.getItemById(Math.abs(numberOfItemsRemain - numberOfItems) + 1);
-			Driver.GetGuiMain().GetWindow().setSize(currentItem.toString().length() * 10, Driver.GetGuiMain().GetWindow().getSize().height);
 			new TextLabel("Items", new DPair(0, 150, 0, nextRow), new DPair(currentItem.toString().length() * 0.005, 0, 0.09, 0), ColorScheme, UserStatsPanel, currentItem.toString(), 14);
 			numberOfItemsOnPage++;
 			numberOfItemsRemain--;
 			nextRow = nextRow + ROW_SPACING;
 		}
-		if (pageNum != 0) {
+		if (pageNum != 1) {
+			if (back != null) {
+				back.GetParent().RemoveChild(back);
+			}
 			back = new TextButton("Back", new DPair(0, 40, 0, Driver.GetGuiMain().GetWindow().getSize().height - 150), new DPair(0.15, 0, 0.09, 0), ColorScheme, UserStatsPanel, "Back", 14);
 			caller = "GenerateUserStat";
 		}
-		if (pageNum != numberOfItemPages - 1) {
+		if (pageNum != numberOfItemPages-1) {
 			if (next != null) {
 				next.GetParent().RemoveChild(next);
 			}
@@ -98,7 +114,6 @@ public class ManagementEvents implements Gui.EventImplementation {
 			caller = "GenerateUserStat";
 		}
 		Driver.GetGuiMain().GetTextBoxes();
-		pageNum++;
 	}
 
 	@Override
@@ -108,13 +123,12 @@ public class ManagementEvents implements Gui.EventImplementation {
 				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
 				numberOfItems = DataLoader.getAlbums().size() + DataLoader.getAudiobooks().size() + DataLoader.getFilm().size();
 				numberOfItemsRemain = numberOfItems;
-				//      numberItemsPerPage = (int)(Driver.GetGuiMain().GetWindow().getSize().height*0.013);
 				numberOfItemsOnPage = 0;
-				numberOfItemPages = numberOfItems / numberItemsPerPage;
-				if ((double) (numberOfItems / numberItemsPerPage) - (int) (numberOfItems / numberItemsPerPage) <= 0) {
+				numberOfItemPages = numberOfItems / NUMBER_ITEMS_PER_PAGE;
+				if ((double) (numberOfItems / NUMBER_ITEMS_PER_PAGE) - (int) (numberOfItems / NUMBER_ITEMS_PER_PAGE) <= 0) {
 					numberOfItemPages = numberOfItemPages + 1;
 				}
-				pageNum = 0;
+				pageNum = 1;
 				nextRow = 20;
 				if (numberOfItemPages > 0) {
 					GenerateItemStat();
@@ -122,15 +136,14 @@ public class ManagementEvents implements Gui.EventImplementation {
 				break;
 			case "Accounts":
 				UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
-				//        numberOfItems = DataLoader.getUser().size();
+				numberOfItems = DataLoader.getUserCount();
 				numberOfItemsRemain = numberOfItems;
-				//      numberItemsPerPage = (int)(Driver.GetGuiMain().GetWindow().getSize().height*0.013);
 				numberOfItemsOnPage = 0;
-				numberOfItemPages = numberOfItems / numberItemsPerPage;
-				if ((double) (numberOfItems / numberItemsPerPage) - (int) (numberOfItems / numberItemsPerPage) <= 0) {
+				numberOfItemPages = numberOfItems / NUMBER_ITEMS_PER_PAGE;
+				if ((double) (numberOfItems / NUMBER_ITEMS_PER_PAGE) - (int) (numberOfItems / NUMBER_ITEMS_PER_PAGE) <= 0) {
 					numberOfItemPages = numberOfItemPages + 1;
 				}
-				pageNum = 0;
+				pageNum = 1;
 				nextRow = 20;
 				if (numberOfItemPages > 0) {
 					GenerateUserStat();
@@ -144,29 +157,24 @@ public class ManagementEvents implements Gui.EventImplementation {
 				Driver.SetFrame("Library");
 				break;
 			case "Next":
+				pageNum++;
 				numberOfItemsOnPage = 0;
 				nextRow = 20;
-				switch (caller) {
-					case "GenerateItemStat":
-						GenerateItemStat();
-						break;
-					case "GenerateUserStat":
-						GenerateUserStat();
-						break;
+				if (caller.equals("GenerateItemStat")) {
+					GenerateItemStat();
+				} else if (caller.equals("GenerateUserStat")) {
+					GenerateUserStat();
 				}
 				break;
 			case "Back":
-				numberOfItemsRemain = numberOfItemsRemain + numberItemsPerPage;
+				numberOfItemsRemain = numberOfItemsRemain + (NUMBER_ITEMS_PER_PAGE*2);
 				numberOfItemsOnPage = 0;
 				nextRow = 20;
 				pageNum--;
-				switch (caller) {
-					case "GenerateItemStat":
-						GenerateItemStat();
-						break;
-					case "GenerateUserStat":
-						GenerateUserStat();
-						break;
+				if (caller.equals("GenerateItemStat")) {
+					GenerateItemStat();
+				} else if (caller.equals("GenerateUserStat")) {
+					GenerateUserStat();
 				}
 				break;
 		}

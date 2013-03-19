@@ -117,6 +117,6 @@ public class Audiobook extends Item
     
     //returns the toString result
     return "Audiobook: " + name + " by " + creator + " (genre " + genre + ", year of release: " + yearOfRelease + ").\n" + 
-	    "           Duration: " + getHour() + ":" + getMinute() + ":" + getSecond() + ", Popularity: " + getPopularity() + ", average rating: " + getRating();
+	    "           Duration: " + getHour() + ":" + getMinute() + ":" + getSecond() + ", Popularity: " + getPopularity() + ", average rating: " + String.format("Range = %.2f", getRating());
   }
 }
