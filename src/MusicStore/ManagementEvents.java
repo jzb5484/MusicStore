@@ -31,6 +31,8 @@ public class ManagementEvents implements Gui.EventImplementation {
 	private String caller;
 	private TextButton back;
 	private TextButton next;
+	private TextButton edit1;
+	private TextButton edit2;
 
 	public final void MakeElements() {
 
@@ -60,6 +62,12 @@ public class ManagementEvents implements Gui.EventImplementation {
 			currentItem = DataLoader.getItemById(Math.abs(numberOfItemsRemain - numberOfItems) + 1);
 			new TextLabel("Items", new DPair(0, 20, 0, nextRow), new DPair(0.6, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
 					currentItem.toString().substring(0, currentItem.toString().indexOf('(')), 14);
+			if (edit1 != null) {
+				edit1.GetParent().RemoveChild(edit1);
+			}
+			if (edit2 != null) {
+				edit2.GetParent().RemoveChild(edit2);
+			}
 			nextRow = nextRow + ROW_SPACING;
 			new TextLabel("Items", new DPair(0, 30, 0, nextRow), new DPair(0.9, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
 					currentItem.toString().substring(currentItem.toString().indexOf('('),currentItem.toString().indexOf(')')+1), 14);
