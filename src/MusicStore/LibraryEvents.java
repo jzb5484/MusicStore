@@ -162,6 +162,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 			ManagementButton.SetParent(leftPanel);
 		}
 		AccountCredit.SetText(String.format("Credit: $%.2f", Driver.CurrentUser.getCredit()));
+		SetFrames();
 	}
 	@Override public void onWindowHide() {	}
 	

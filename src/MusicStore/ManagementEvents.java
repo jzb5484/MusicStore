@@ -63,7 +63,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 		new TextButton("ItemStats", new DPair(0, 0, 0, 12), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Item Stats/Change Items", 10);
 		new TextButton("Accounts", new DPair(0, 0, 0, 54), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "User Accounts", 14);
 		new TextButton("AddItems", new DPair(0, 0, 0, 96), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Add Items", 14);
-		new TextButton("BackToLibaray", new DPair(0, 0, 0, 222), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Back To Libaray", 14);
+		new TextButton("BackToLibaray", new DPair(0, 0, 0, 222), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Back To Library", 14);
 		new TextLabel("Total sales", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Sales: $" + DataLoader.getSales(), 14);
 
 	}
@@ -79,7 +79,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 		ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
 		while (numberOfItemsOnPage < NUMBER_ITEMS_PER_PAGE && numberOfItemsRemain > 0) {
 			currentItem = DataLoader.getItemById(Math.abs(numberOfItemsRemain - numberOfItems) + 1);
-			new TextLabel("Items", new DPair(0, 20, 0, nextRow), new DPair(0.6, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
+			TextLabel newTextLabel = new TextLabel("Items", new DPair(0, 10, 0, nextRow), new DPair(1, -20, 0, ROW_SPACING - 5), ColorScheme, ItemStatsPanel,
 					currentItem.toString().substring(0, currentItem.toString().indexOf('(')), 14);
 			switch (numberOfItemsOnPage) {
 				case 0:
@@ -88,7 +88,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 					}
 					itemOne = currentItem;
 					editId = currentItem.getId();
-					editOne = new TextButton("edit1", new DPair(0, 400, 0, nextRow), new DPair(0.1, 0, 0.09, 0), ColorScheme, ItemStatsPanel, "Edit", 14);
+					editOne = new TextButton("edit1", new DPair(1, -110, .05, 0), new DPair(0, 100, .9, 0), ColorScheme, newTextLabel, "Edit", 14);
 					break;
 				case 1:
 					if (editTwo != null) {
@@ -96,16 +96,16 @@ public class ManagementEvents implements Gui.EventImplementation {
 					}
 					itemTwo = currentItem;
 					editId = currentItem.getId();
-					editTwo = new TextButton("edit2", new DPair(0, 400, 0, nextRow), new DPair(0.1, 0, 0.09, 0), ColorScheme, ItemStatsPanel, "Edit", 14);
+					editTwo = new TextButton("edit2", new DPair(1, -110, .05, 0), new DPair(0, 100, .9, 0), ColorScheme, newTextLabel, "Edit", 14);
 					break;
 
 			}
 			nextRow = nextRow + ROW_SPACING;
-			new TextLabel("Items", new DPair(0, 30, 0, nextRow), new DPair(0.9, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
+			new TextLabel("Items", new DPair(0, 40, 0, nextRow), new DPair(1, -50, 0, ROW_SPACING - 5), ColorScheme, ItemStatsPanel,
 					currentItem.toString().substring(currentItem.toString().indexOf('('), currentItem.toString().indexOf(')') + 1) + ", Hidden: "
 					+ Boolean.toString(currentItem.isVisible()), 14);
 			nextRow = nextRow + ROW_SPACING;
-			new TextLabel("Items", new DPair(0, 30, 0, nextRow), new DPair(0.9, 0, 0.09, 0), ColorScheme, ItemStatsPanel,
+			new TextLabel("Items", new DPair(0, 40, 0, nextRow), new DPair(1, -50, 0, ROW_SPACING - 5), ColorScheme, ItemStatsPanel,
 					currentItem.toString().substring(currentItem.toString().indexOf(')') + 4), 14);
 			nextRow = nextRow + ROW_SPACING;
 			numberOfItemsOnPage++;
@@ -241,12 +241,16 @@ public class ManagementEvents implements Gui.EventImplementation {
 				break;
 			case "SaveItemNew":
 				if (Edit != null) {
-					Edit.GetParent().RemoveChild(Edit);
+					Edit.SetParent(null);
 				}
 				if (albumRadio.GetSelected()) {
 					Album newAudio = new Album();
+					int duration = 0;
+					try {duration += Integer.parseInt(durationH.GetText()) * 3600;} catch(Exception e) {}
+					try {duration += Integer.parseInt(durationM.GetText()) * 0060;} catch(Exception e) {}
+					try {duration += Integer.parseInt(durationS.GetText()) * 0001;} catch(Exception e) {}
 					newAudio.userInit(0, name.GetText(), Integer.parseInt(release.GetText()),
-							((Integer.parseInt(durationH.GetText()) * 3600) + (Integer.parseInt(durationM.GetText()) * 60) + Integer.parseInt(durationS.GetText())),
+							duration,
 							genre.GetText(), preview.GetText(), Double.parseDouble(price.GetText()), hidden.GetSelected(), creator.GetText());
 					DataLoader.addItemToList(newAudio);
 				} else if (audioBookRadio.GetSelected()) {
@@ -262,6 +266,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 							genre.GetText(), preview.GetText(), Double.parseDouble(price.GetText()), hidden.GetSelected(), creator.GetText());
 					DataLoader.addItemToList(newAudio);
 				}
+				Driver.GetGuiMain().GetTextBoxes();
 				break;
 		}
 	}
@@ -318,8 +323,8 @@ public class ManagementEvents implements Gui.EventImplementation {
 				editItem.getCreator(), 14, new Color(0, 0, 0));
 		new TextLabel("TotalSold", new DPair(0, 40, 0, 340), new DPair(0.23, 0, 0.05, 0), ColorScheme, Edit, "Total Number Sold: ", 14);
 		new TextLabel("TotalSoldTwo", new DPair(0, 190, 0, 340), new DPair(0.09, 0, 0.05, 0), ColorScheme, Edit, Integer.toString(editItem.getNumSold()), 14);
-		saveItem = new TextButton("SaveItems", new DPair(0, 340, 0, Driver.GetGuiMain().GetWindow().getSize().height - 100),
-				new DPair(0.2, 0, 0.09, 0), ColorScheme, Edit, "Save", 14);
+		saveItem = new TextButton("SaveItems", new DPair(1, -140, 1, -50),
+				new DPair(0, 130, 0, 40), ColorScheme, Edit, "Save", 16);
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 

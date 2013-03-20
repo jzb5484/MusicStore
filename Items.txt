@@ -12,7 +12,22 @@ false
 9
 Florence & The Machine
 26
-28
+36
+Album
+35
+Hold Time
+2009
+2056
+Folk
+
+0
+7.99
+true
+0
+0
+M. Ward
+26
+36
 Film
 2
 UHF
@@ -27,7 +42,22 @@ false
 0
 Weird Al
 26
-28
+36
+Album
+33
+The Rip Tide
+2011
+1991
+Indie pop
+
+0
+9.99
+true
+0
+0
+Beirut
+26
+36
 Audiobook
 3
 Life of Pi
@@ -42,7 +72,7 @@ false
 0
 Yann Martel
 26
-28
+36
 Album
 4
 Battle Born
@@ -57,4 +87,19 @@ false
 0
 The Killers
 26
-28
+36
+Album
+29
+We Are All Where We Belong
+2009
+3480
+Alt Rock
+
+0
+14.99
+true
+0
+0
+Quiet Company
+26
+36
