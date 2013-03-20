@@ -70,6 +70,7 @@ public class Driver {
 			case "Library":
 				Main.SetMain(LibraryFrame);
 				Main.SetEventImplementation(LibraryEventsObj);
+				((Gui.WindowEvents) LibraryEventsObj).onWindowShown();
 				Main.SetTitle("Library");
 				break;
                             //if the management frame needs to be set
@@ -98,6 +99,18 @@ public class Driver {
 	public static void main(String[] args) {
                 DataLoader.loadFromFile();
 		Main = new GuiMain("Login Screen");
+		
+		// When the window closes, save everything.
+		Main.GetWindow().addWindowListener(	
+			new java.awt.event.WindowAdapter() {
+				@Override
+				public void windowClosing(java.awt.event.WindowEvent e) {
+					System.out.println("Window Closing.");
+					DataLoader.saveToFile();
+				}
+			}
+		);
+		
 		Main.GetWindow().setSize(800, 500);
 		EstablishLogin();
 		EstablishLibrary();
@@ -105,7 +118,5 @@ public class Driver {
                 EstablishRegister();
 
 		SetFrame("Login");
-                
-                DataLoader.saveToFile();
 	}
 }

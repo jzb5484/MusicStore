@@ -17,6 +17,13 @@ public class TextButton extends GuiObject {
 	private boolean Clicked = false;
 	private boolean Hovering = false;
 
+	public void SetTextColor(Color c) {TextColor = (c == null ? TextColor : c);}
+	public void SetText(String text) {Text = text;}
+	public void SetFont(Font f) {TextFont = f;}
+	public Color GetTextColor() {return TextColor;}
+	public String GetText() {return Text;}
+	public Font GetFont() {return TextFont;}
+	
 	public void SetClicked(boolean value) {
 		Clicked = value;
 	}

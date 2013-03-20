@@ -13,7 +13,7 @@ false
 Florence & The Machine
 26
 28
-Album
+Film
 2
 UHF
 1980
@@ -28,7 +28,7 @@ false
 Weird Al
 26
 28
-Album
+Audiobook
 3
 Life of Pi
 2010

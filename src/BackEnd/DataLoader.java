@@ -53,54 +53,79 @@ public class DataLoader {
 
 	public static void loadFromFile() {
 		//Open "Item.txt" and "Users.txt" and then save info
+		System.out.println("Loading...");
 		try {
 			int lastUsedId = 1;
 			Scanner input = new Scanner(new File("Items.txt"));
+			String get;
 			while (input.hasNext()) {
 				String className = input.nextLine();
-				int id = input.nextInt();
-				input.skip("\n");
+					System.out.println("\t\tClassName: " + className);
+				get = input.nextLine();
+				int id = Integer.parseInt(get);
+					System.out.println("\t\tId: " + id);
 				String name = input.nextLine();
-				int yearOfRelease = input.nextInt();
-				int duration = input.nextInt();
-				input.skip("\n");
+					System.out.println("\t\tName: " + name);
+				get = input.nextLine();
+				int yearOfRelease = Integer.parseInt(get);
+					System.out.println("\t\tYear: " + yearOfRelease);
+				get = input.nextLine();
+				int duration = Integer.parseInt(get);
+					System.out.println("\t\tDuration: " + duration);
 				String genre = input.nextLine();
+					System.out.println("\t\tGenre: " + genre);
 				String preview = input.nextLine();
-				int numSold = input.nextInt();
-				double price = input.nextDouble();
-				boolean hidden = input.nextBoolean();
-				int cumulativeRating = input.nextInt();
-				int numRatings = input.nextInt();
-				input.skip("\n");
+					System.out.println("\t\tPreview: " + preview);
+				get = input.nextLine();
+				int numSold = Integer.parseInt(get);
+					System.out.println("\t\tNumber Sold: " + numSold);
+				get = input.nextLine();
+				double price = Double.parseDouble(get);
+					System.out.println("\t\tPrice: " + price);
+				get = input.nextLine();
+				boolean hidden = Boolean.parseBoolean(get);
+					System.out.println("\t\thidden: " + hidden);
+				get = input.nextLine();
+				int cumulativeRating = Integer.parseInt(get);
+					System.out.println("\t\tTotal Ratings: " + cumulativeRating);
+				get = input.nextLine();
+				int numRatings =Integer.parseInt(get);
+					System.out.println("\t\tNumber of Ratings: " + numRatings);
 				String creator = input.nextLine();
-				int totalNumberSold = input.nextInt();
-				lastUsedId = Math.max(lastUsedId, input.nextInt());
-				input.skip("\n");
+					System.out.println("\t\tCreator: " + creator);
+				get = input.nextLine();
+				int totalNumberSold = Integer.parseInt(get);
+					System.out.println("\t\tNum Sold: " + totalNumberSold);
+				get = input.nextLine();
+				lastUsedId = Math.max(lastUsedId, Integer.parseInt(get));
+					System.out.println("\t\tLast ID: " + lastUsedId);
 				if("Album".equals(className)) {
+					System.out.println("\tLoading album: " + name);
 					Album newAlbum = new Album();
 					newAlbum.dataLoaderInit(id, name, yearOfRelease, duration, genre,
 							preview, numSold, price, hidden, cumulativeRating,
 							numRatings, creator, totalNumberSold, lastUsedId);
-					itemSet.put(id, newAlbum);
+					DataLoader.addItemToList(newAlbum);
 				} else if("Audiobook".equals(className)) {
+					System.out.println("\tLoading audiobook: " + name);
 					Audiobook newAudio = new Audiobook();
 					newAudio.dataLoaderInit(id, name, yearOfRelease, duration, genre,
 							preview, numSold, price, hidden, cumulativeRating,
 							numRatings, creator, totalNumberSold, lastUsedId);
-					itemSet.put(id, newAudio);
+					DataLoader.addItemToList(newAudio);
 				} else if("Film".equals(className)) {
+					System.out.println("\tLoading film: " + name);
 					Film newFilm = new Film();
 					newFilm.dataLoaderInit(id, name, yearOfRelease, duration, genre,
 							preview, numSold, price, hidden, cumulativeRating,
 							numRatings, creator, totalNumberSold, lastUsedId);
-					itemSet.put(id, newFilm);
+					DataLoader.addItemToList(newFilm);
 				}
 			}
-		} catch (IOException e) {
-			System.out.println("Could not find Items.txt file");
+			System.out.println("Item load complete.");
 		} catch(Exception e) {
-			System.out.println("Exception (" + e.getClass().getName() + "): " +
-				e.getMessage());
+			System.out.println("Exception during item load (" + e.getClass().getName() + "): " + e.getMessage());
+			e.printStackTrace();
 		}
 		try {		
 			Scanner inputUser = new Scanner(new File("Users.txt"));
@@ -127,25 +152,31 @@ public class DataLoader {
 				}
 				newUser.setPurchaseHistory(purchases);
 				newUser.setRatings(ratings);
+				System.out.println("\tLoading user: " + userId);
 				DataLoader.addUserToList(newUser);
 			}
+			System.out.println("User load complete.");
 		} catch (IOException x) {
 			System.out.println("File Users.txt was not found.");
 		} catch (Exception x) {
 			System.out.println("Exception: " + x.getClass().getName() + ", " +
 				x.getMessage());
 		}
+		System.out.println("loadFromFile function completed.");
 	}
 
 	public static void saveToFile() {
 		try (BufferedWriter outfile = new BufferedWriter(new FileWriter("Items.txt"))) {
 			if (true) {
+				System.out.println("Saving...");
 				HashMap<Integer, Item> set = DataLoader.itemSet;
 				Set<Integer> iterableSet = set.keySet();
 				Iterator<Integer> i = iterableSet.iterator();
 				while (i.hasNext()) {
 					Item x = set.get(i.next());
-					outfile.write("Album\n");
+					System.out.println("\tSaving item: " + x.getName());
+					outfile.write((x instanceof Album) ? "Album" : ((x instanceof Film) ? "Film" : "Audiobook"));
+					outfile.write("\n");
 					outfile.write("" + x.getId() + "\n");
 					outfile.write(x.getName() + "\n");
 					outfile.write("" + x.getYearOfRelease() + "\n");
@@ -161,16 +192,18 @@ public class DataLoader {
 					outfile.write("" + Album.getTotalNumberSold() + "\n");
 					outfile.write("" + Item.getLastUsedId() + "\n");
 				}
+				System.out.println("Item save complete.");
 			}
 			outfile.close();
 		} catch(Exception e) {
-			System.out.println("Exception (" + e.getClass().getName() + "): " + e.getMessage());
+			System.out.println("\t\tException during item save (" + e.getClass().getName() + "): " + e.getMessage());
 		}
 		try (BufferedWriter outfile = new BufferedWriter(new FileWriter("Users.txt"))) {
 			Set<String> iterableSet = users.keySet();
 			Iterator<String> i = iterableSet.iterator();
 			while (i.hasNext()) {
 				User x = users.get(i.next());
+				System.out.println("\tSaving user: " + x.getUsername());
 				outfile.write(x.getUsername() + "\n" + x.getPassword() + "\n" +
 					x.getName() + "\n" + x.getAddress() + "\n" + x.getCredit() +
 					"\n" + x.getAdministrator() + "\n");
@@ -185,11 +218,13 @@ public class DataLoader {
 					outfile.write(n + "\n");
 				}
 			}
+			System.out.println("User save complete.");
 			outfile.close();
 		} catch (Exception e) {
-			System.out.println("Exception: " + e.getClass().getName() + ", " +
+			System.out.println("\t\tException during user save (" + e.getClass().getName() + "): " +
 				e.getMessage());
 		}
+		System.out.println("saveToFile function completed.");
 	}
 
 	public static User getUserFromUsername(String username, String password) {
@@ -221,7 +256,7 @@ public class DataLoader {
 	public static boolean addItemToList(Item newItem) {
 		Integer id = new Integer(newItem.getId());
 		if (!itemSet.containsKey(id)) {
-			itemSet.put(id, (Film) newItem);
+			itemSet.put(id, newItem);
 			UpdatedList = false;
 			return true;
 		}

@@ -45,7 +45,14 @@ public class GuiObject {
 		Iterator<GuiObject> i = GetChildren();
 		while (i.hasNext()) {i.next().SetMain(main);}
 	}
-	
+	public void SetParent(GuiObject newParent) {
+		if (GetParent() != null) {
+			GetParent().RemoveChild(this);
+		}
+		if (newParent != null) {
+			newParent.AddChild(this);
+		}
+	}
 	public GuiObject GetParent() {return Parent;}
 	public int GetAbsoluteSizeX() {return AbsoluteSizeX;}
 	public int GetAbsoluteSizeY() {return AbsoluteSizeY;}
