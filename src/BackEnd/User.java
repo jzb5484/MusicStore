@@ -61,13 +61,13 @@ public class User {
      */
     public String GetInfo() {
         // concatenate all the general fields.
-        String result = "" + "Username: " + username + "; Password: " + password + "; Name: " + name +
-                "; Address: " + address + "; Credit: " + credit + "\n";
+        String result = "Username: " + username + "~ Password: " + password + "< Name: " + name +
+                "> Address: " + address + "; Credit: " + credit + "|"+ "\n";
         // concatenate the purchased items and the ratings they were given.
         for (int i = 0; i < purchaseHistory.size(); i++) {
 	    Integer p = (Integer) purchaseHistory.get(i);
-            result = result + DataLoader.getItemById(p.intValue()).getName() + " - rating: "
-                    + ratings.get(i) + ", ";
+            result = result + DataLoader.getItemById(p.intValue()).getName() + "( - rating: "
+                    + ratings.get(i) + ") ";
         }
         return result;
     }

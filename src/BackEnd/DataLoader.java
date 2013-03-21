@@ -50,6 +50,16 @@ public class DataLoader {
 		}
 		return null;
 	}
+	
+	public static HashMap getItemSet()
+	{
+		return itemSet;
+	}
+	
+	public static HashMap getUsers()
+	{
+		return users;
+	}
 
 	public static void loadFromFile() {
 		//Open "Item.txt" and "Users.txt" and then save info
