@@ -10,17 +10,21 @@ anotherUser
 user
 Mr. Bill
 400 Atherton St.
-790.0
+767.03
 false
 Purchase History
 4
+1
+35
 Ratings
+0
+0
 0
 administrator
 admin
 mr. administrator
 1 Main St.
-59.999999999999986
+28.02999999999998
 true
 Purchase History
 35
@@ -30,7 +34,13 @@ Purchase History
 3
 2
 37
+43
+49
+47
 Ratings
+0
+0
+0
 0
 0
 0

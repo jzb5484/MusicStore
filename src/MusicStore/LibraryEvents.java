@@ -16,6 +16,8 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	private User currentUser;
 	private Frame leftPanel;
 	private Frame CreditAdd;
+	private Frame ModifyItem;
+	public Item CurrentPlayingItem = null;
 
 	public final void MakeElements() {
 		Color ColorScheme = Driver.ColorScheme;
@@ -40,7 +42,55 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		Request.SetTextColor(Driver.ColorScheme);
 		new TextBox("Input", new DPair(0, 4, 0, 28), new DPair(1, -8, 0, 20), Color.WHITE, CreditAdd, "Credit", 14, Color.BLACK);
 		new TextButton("CreditAdd", new DPair(.5, -20, 1, -24), new DPair(0, 40, 0, 20), Driver.ColorScheme, CreditAdd,  "OK", 14);
+
+		ModifyItem = new Frame("ModifyItem", new DPair(.5, -200, .5, -114), new DPair(0, 400, 0, 228), ColorScheme, null);
+		new Frame("InsideBorder", new DPair(0, 3, 0, 3), new DPair(1, -6, 1, -6), Color.WHITE, ModifyItem);
+		new TextLabel("Id", new DPair(0, 4, 0, 4), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "ID #000", 12).SetTextColor(Driver.ColorScheme);
+		new TextLabel("Title", new DPair(0, 4, 0, 26), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Title: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("TitleInput", new DPair(0, 108, 0, 26), new DPair(1, -115, 0, 18), Color.WHITE, ModifyItem, "newtitle", 12, Driver.ColorScheme);
+		new TextLabel("Artist", new DPair(0, 4, 0, 48), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Artist: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("ArtistInput", new DPair(0, 108, 0, 48), new DPair(1, -115, 0, 18), Color.WHITE, ModifyItem, "newartist", 12, Driver.ColorScheme);
+		new TextLabel("Year", new DPair(0, 4, 0, 70), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Year: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("YearInput", new DPair(0, 108, 0, 70), new DPair(1, -115, 0, 18), Color.WHITE, ModifyItem, "newyear", 12, Driver.ColorScheme);
+		new TextLabel("Genre", new DPair(0, 4, 0, 92), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Genre: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("GenreInput", new DPair(0, 108, 0, 92), new DPair(1, -115, 0, 18), Color.WHITE, ModifyItem, "newgenre", 12, Driver.ColorScheme);
+		new TextLabel("Cost", new DPair(0, 4, 0, 114), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Cost: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("CostInput", new DPair(0, 108, 0, 114), new DPair(1, -115, 0, 18), Color.WHITE, ModifyItem, "newcost", 12, Driver.ColorScheme);
+		new TextLabel("Duration", new DPair(0, 4, 0, 136), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Duration: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("DurationInputH", new DPair(0, 108, 0, 136), new DPair(0, 40, 0, 18), Color.WHITE, ModifyItem, "newduration", 12, Driver.ColorScheme);
+		new TextBox("DurationInputM", new DPair(0, 152, 0, 136), new DPair(0, 40, 0, 18), Color.WHITE, ModifyItem, "newduration", 12, Driver.ColorScheme);
+		new TextBox("DurationInputS", new DPair(0, 194, 0, 136), new DPair(0, 40, 0, 18), Color.WHITE, ModifyItem, "newduration", 12, Driver.ColorScheme);
+		new TextLabel("Preview", new DPair(0, 4, 0, 158), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Preview: ", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("PreviewInput", new DPair(0, 108, 0, 158), new DPair(1, -115, 0, 18), Color.WHITE, ModifyItem, "newpreview", 12, Driver.ColorScheme);
+		new TextLabel("Hidden", new DPair(0, 4, 0, 180), new DPair(0, 100, 0, 18), Color.WHITE, ModifyItem, "Hidden: ", 12).SetTextColor(Driver.ColorScheme);
+		new CheckBox("HiddenInput", new DPair(0, 108, 0, 180), new DPair(0, 100, 0, 18), Driver.ColorScheme, ModifyItem, "Hidden", 12);
+		new TextButton("SubmitChanges", new DPair(0, 4, 1, -26), new DPair(0, 140, 0, 20), Driver.ColorScheme, ModifyItem, "Submit Changes", 14);
+		new TextButton("CloseModifyWindow", new DPair(1, -30, 1, -26), new DPair(0, 26, 0, 20), Driver.ColorScheme, ModifyItem, "X", 14);
 	}
+
+	private int CurrentModifyWindowId = 0;
+	private void SetModify(int itemIndex) {
+		Item current = DataLoader.getItemById(itemIndex);
+		if (current != null) {
+			CurrentModifyWindowId = itemIndex;
+			ModifyItem.SetParent(MainFrame);
+			Driver.GetGuiMain().GetTextBoxes();
+			((TextLabel) ModifyItem.GetChild("Id")).SetText("ID #" + itemIndex);
+			((TextBox) ModifyItem.GetChild("TitleInput")).SetText(current.getName());
+			((TextBox) ModifyItem.GetChild("ArtistInput")).SetText(current.getCreator());
+			((TextBox) ModifyItem.GetChild("YearInput")).SetText("" + current.getYearOfRelease());
+			((TextBox) ModifyItem.GetChild("GenreInput")).SetText(current.getGenre());
+			((TextBox) ModifyItem.GetChild("CostInput")).SetText("" + current.getPrice());
+			((TextBox) ModifyItem.GetChild("DurationInputH")).SetText("" + current.getHour());
+			((TextBox) ModifyItem.GetChild("DurationInputM")).SetText("" + current.getMinute());
+			((TextBox) ModifyItem.GetChild("DurationInputS")).SetText("" + current.getSecond());
+			((TextBox) ModifyItem.GetChild("PreviewInput")).SetText("" + current.getPreview());
+			((CheckBox) ModifyItem.GetChild("HiddenInput")).SetSelected(current.isVisible());
+			((CheckBox) ModifyItem.GetChild("HiddenInput")).SetText(((CheckBox) ModifyItem.GetChild("HiddenInput")).GetSelected() ? "true" : "false");
+		}
+	}
+	
+	
 	private int CurrentList = 1; // 0 means user's library, 1 means albums, 2 means audiobooks, 3 means films
 	private int PixelOffset = 0; // How many pixels offset the 
 	private int ViewIndex = 0; // determines which index represents the top most box in the scroll list
@@ -77,40 +127,42 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		PixelOffset = (int) LibScroll.GetValue();
 		ViewIndex = (int) Math.floor((double) PixelOffset / 40);
 		int id = ViewIndex + ScrollList.indexOf(frame);
-
-		switch (CurrentList) {
-			case 0:
-				return (int) Driver.CurrentUser.getPurchaseHistory().get(id);
-			case 1:
-				return (int) DataLoader.getAlbums().get(id).getId();
-			case 2:
-				return DataLoader.getAudiobooks().get(id).getId();
-			case 3:
-				return DataLoader.getFilm().get(id).getId();
+		if (CurrentList == 0) {
+			return (int) ActiveList.get(id);
+		} else if (CurrentList >= 1 && CurrentList <= 3) {
+			return (int) ((Item) ActiveList.get(id)).getId();
 		}
 		return 0;
 	}
 
+	private ArrayList ActiveList = new ArrayList();
+	private int LastCurrentListValue = 0;
 	private void SetFrames() {
 		AccountCredit.SetText(String.format("Credit: $%.2f", Driver.CurrentUser.getCredit()));
 		Frame current;
 		TextLabel rowOne;
 		TextLabel rowTwo;
 		TextButton commandButton;
-		ArrayList ActiveList = null;
-		switch (CurrentList) {
-			case 0:
-				ActiveList = Driver.CurrentUser.getPurchaseHistory();
-				break;
-			case 1:
-				ActiveList = DataLoader.getAlbums();
-				break;
-			case 2:
-				ActiveList = DataLoader.getAudiobooks();
-				break;
-			case 3:
-				ActiveList = DataLoader.getFilm();
-				break;
+		if (LastCurrentListValue != CurrentList) {
+			ArrayList temporaryList = null;
+			ActiveList.clear();
+			if (CurrentList == 0) {temporaryList = Driver.CurrentUser.getPurchaseHistory();}
+			else if (CurrentList == 1) {temporaryList = DataLoader.getAlbums();}
+			else if (CurrentList == 2) {temporaryList = DataLoader.getAudiobooks();}
+			else if (CurrentList == 3) {temporaryList = DataLoader.getFilm();}
+			if (CurrentList >= 1 && CurrentList <= 3) {
+				// if the use is looking at a store page, weed out all invisible songs/albums *unless* it is a administrator.
+				for (int i = 0; i < temporaryList.size(); i++) {
+					if (temporaryList.get(i) instanceof Item && (!((Item) temporaryList.get(i)).isVisible() || Driver.CurrentUser.getAdministrator())) {
+						ActiveList.add(temporaryList.get(i));
+					}
+				}
+			} else if (CurrentList == 0) {
+				for (int i = 0; i < temporaryList.size(); i++) {
+					ActiveList.add(temporaryList.get(i));
+				}
+			}
+			LastCurrentListValue = CurrentList;
 		}
 		// this should never happen, but just in case it does, break the function before an error is thrown.
 		if (ActiveList == null) {
@@ -119,7 +171,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		int MaximumIndex = ActiveList.size();
 		LibScroll.SetMax(Math.max(0, MaximumIndex * (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING) - Driver.GetGuiMain().GetWindow().getHeight() + 50));
 		PixelOffset = (int) LibScroll.GetValue();
-		ViewIndex = (int) Math.floor((double) PixelOffset / 40);
+		ViewIndex = (int) Math.floor((double) PixelOffset / (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING));
 		for (int i = 0; i < ScrollList.size(); i++) {
 			// Position the frame appropriately.
 			current = ScrollList.get(i);
@@ -137,12 +189,21 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				if (CurrentList == 0) {
 					Item currentItem = DataLoader.getItemById(((Integer) ActiveList.get(i + ViewIndex)).intValue());
 					SetListText(rowOne, rowTwo, currentItem);
-					commandButton.SetText("Play");
+					if (CurrentPlayingItem == currentItem) {
+						commandButton.SetText("Stop");
+					} else {
+						commandButton.SetText("Play");
+					}
 				} else if (CurrentList >= 1 && CurrentList <= 4) {
 					Item currentItem = (Item) ActiveList.get(i + ViewIndex);
 					SetListText(rowOne, rowTwo, currentItem);
+					if (currentItem.isVisible()) {rowTwo.SetText(rowTwo.GetText() + "; HIDDEN");}
 					if (Driver.CurrentUser.getPurchaseHistory().contains(currentItem.getId())) {
-						commandButton.SetText("Play");
+						if (CurrentPlayingItem == currentItem) {
+							commandButton.SetText("Stop");
+						} else {
+							commandButton.SetText("Play");
+						}
 					} else {
 						commandButton.SetText("Buy");
 					}
@@ -191,11 +252,25 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				// "Buy" or "Play" button pressed.
 				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Buy") && CurrentList >= 1 && CurrentList <= 3) {
 					int id = GetItemIdOfFrame((Frame) button.GetParent());
-					System.out.println("Attempting to purchase item: " + id);
+					System.out.println("Pressed buy for item: " + id);
 					boolean success = Driver.CurrentUser.purchaseItem(id);
 					if (success) {
 						((TextButton) button).SetText("Play");
+					} else {
+						System.out.println("Buy failed.");
 					}
+				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Play") && CurrentList == 0) {
+					int id = GetItemIdOfFrame((Frame) button.GetParent());
+					if (CurrentPlayingItem != null) {CurrentPlayingItem.stopAudio();}
+					CurrentPlayingItem = DataLoader.getItemById(id);
+					CurrentPlayingItem.playAudioFull();
+				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Stop") && CurrentPlayingItem != null) {
+					CurrentPlayingItem.stopAudio();
+					CurrentPlayingItem = null;
+				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Play") && CurrentList >= 1 && CurrentList <= 3) {
+					int id = GetItemIdOfFrame((Frame) button.GetParent());
+					CurrentPlayingItem = DataLoader.getItemById(id);
+					CurrentPlayingItem.playAudioPreview();
 				}
 				AccountCredit.SetText(String.format("Credit: $%.2f", Driver.CurrentUser.getCredit()));
 				break;
@@ -216,6 +291,45 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				if (button instanceof TextBox && ((TextBox) button).GetText().equals("Credit")) {
 					((TextBox) button).SetText("");
 				}
+				break;
+			case "Action2":
+				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Edit") && CurrentList >= 0 && CurrentList <= 3) {
+					int id = GetItemIdOfFrame((Frame) button.GetParent());
+					SetModify(id);
+				}
+				break;
+			case "HiddenInput":
+				((CheckBox) button).SetText(((CheckBox) button).GetSelected() ? "true" : "false");
+				break;
+			case "SubmitChanges":
+				Item current = DataLoader.getItemById(CurrentModifyWindowId);
+				if (current != null) {
+					current.setCreator(((TextBox) ModifyItem.GetChild("ArtistInput")).GetText());
+					current.setName(((TextBox) ModifyItem.GetChild("TitleInput")).GetText());
+					try {	current.setYearOfRelease(Integer.parseInt(((TextBox) ModifyItem.GetChild("YearInput")).GetText()));} catch (Exception e) {}
+					current.setGenre(((TextBox) ModifyItem.GetChild("GenreInput")).GetText());
+					try {	current.setPrice(Double.parseDouble(((TextBox) ModifyItem.GetChild("CostInput")).GetText()));} catch (Exception e) {}
+					int d = 0;
+					try {
+						d += Integer.parseInt(((TextBox) ModifyItem.GetChild("DurationInputH")).GetText()) * 3600;
+					} catch(Exception e) {}
+					try {
+						d += Integer.parseInt(((TextBox) ModifyItem.GetChild("DurationInputM")).GetText()) * 60;
+					} catch(Exception e) {}
+					try {
+						d += Integer.parseInt(((TextBox) ModifyItem.GetChild("DurationInputS")).GetText());
+					} catch(Exception e) {}
+					current.setDuration(d);
+					current.setPreview(((TextBox) ModifyItem.GetChild("PreviewInput")).GetText());
+					current.setHidden(((CheckBox) ModifyItem.GetChild("HiddenInput")).GetSelected());
+				}
+				ModifyItem.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "CloseModifyWindow":
+				ModifyItem.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
 		}
 		SetFrames();
 	}
@@ -233,6 +347,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 			}
 		}
 		AccountCredit.SetText(String.format("Credit: $%.2f", Driver.CurrentUser.getCredit()));
+		LastCurrentListValue = -1;
 		SetFrames();
 	}
 	@Override public void onWindowHide() {	}

@@ -81,6 +81,7 @@ public class Driver {
 				Main.SetMain(ManagementFrame);
 				//sets the current object listeners to the manager
 				Main.SetEventImplementation(ManagementEventsObj);
+				((Gui.WindowEvents) ManagementEventsObj).onWindowShown();
 				//set the title ot the manager
 				Main.SetTitle("Administrative Tools");
 				break;

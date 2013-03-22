@@ -49,7 +49,7 @@ public class TextBox extends GuiObject {
 	public Color GetTextColor() {return TextColor;}
 	public Font GetFont() { return TextFont; }
 
-	public void SetText(String text) {box.setText(text);}
+	public void SetText(String text) {if (text!=null) {box.setText(text);}}
 	public void SetPasswordField(boolean value) { PasswordField = value; }
 	public void SetTextColor(Color textColor) { TextColor = textColor; }
 	public void SetFontSize(int size) {this.TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, size)));}

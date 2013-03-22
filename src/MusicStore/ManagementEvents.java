@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author Jonathan Maderic
  */
-public class ManagementEvents implements Gui.EventImplementation {
+public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEvents {
 
 	public GuiObject MainFrame;
 	private Color ColorScheme = Driver.ColorScheme;
@@ -72,9 +72,9 @@ public class ManagementEvents implements Gui.EventImplementation {
 		new Frame("Stripe1", new DPair(0, 0, 0, 0), new DPair(0, 60, 1, 0), ColorExtension.Lighten(ColorScheme, .7), leftPanel);
 		new Frame("Stripe2", new DPair(0, 72, 0, 0), new DPair(0, 6, 1, 0), ColorExtension.Lighten(ColorScheme, .7), leftPanel);
 		new Frame("Stripe3", new DPair(1, -18, 0, 0), new DPair(0, 18, 1, 0), ColorExtension.Lighten(ColorScheme, .7), leftPanel);
-		new TextButton("ItemStats", new DPair(0, 0, 0, 12), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Item Stats/Change Items", 10);
-		new TextButton("Accounts", new DPair(0, 0, 0, 54), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "User Accounts", 14);
-		new TextButton("AddItems", new DPair(0, 0, 0, 96), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Add Items", 14);
+		//new TextButton("ItemStats", new DPair(0, 0, 0, 12), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Item Stats/Change Items", 10);
+		new TextButton("Accounts", new DPair(0, 0, 0, 12), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "User Accounts", 14);
+		new TextButton("AddItems", new DPair(0, 0, 0, 54), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Add Item", 14);
 		new TextButton("BackToLibaray", new DPair(0, 0, 0, 222), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Back To Library", 14);
 		new TextLabel("Total sales", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Sales: $" + DataLoader.getSales(), 14);
 
@@ -228,7 +228,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 				break;
 			case "Accounts":
 				if (Edit != null) {
-					Edit.GetParent().RemoveChild(Edit);
+					Edit.SetParent(null);
 				}
 				Driver.GetGuiMain().removeAll();
 				UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
@@ -375,36 +375,31 @@ public class ManagementEvents implements Gui.EventImplementation {
 				if (Edit != null) {
 					Edit.SetParent(null);
 				}
+				Driver.GetGuiMain().GetTextBoxes();
+				int duration = 0;
+				try {duration += Integer.parseInt(durationH.GetText()) * 3600;} catch (Exception e) {}
+				try {duration += Integer.parseInt(durationM.GetText()) * 0060;} catch (Exception e) {}
+				try {duration += Integer.parseInt(durationS.GetText()) * 0001;} catch (Exception e) {}
+				String title = name.GetText();
+				int releaseYear; try {releaseYear = Integer.parseInt(release.GetText());}
+				catch(Exception e) {JOptionPane.showMessageDialog(null, "Problem with input. Ensure 'release year' is an integer."); break;}
+				String albumgenre = genre.GetText();
+				String albumpreview = preview.GetText();
+				double albumcost; try {albumcost = Double.parseDouble(price.GetText());}
+				catch(Exception e) {JOptionPane.showMessageDialog(null, "Problem with input. Ensure 'cost' is a double."); break;}
+				boolean albumhidden = hidden.GetSelected();
+				String artist = creator.GetText();
 				if (albumRadio.GetSelected()) {
 					Album newAudio = new Album();
-					int duration = 0;
-					try {
-						duration += Integer.parseInt(durationH.GetText()) * 3600;
-					} catch (Exception e) {
-					}
-					try {
-						duration += Integer.parseInt(durationM.GetText()) * 0060;
-					} catch (Exception e) {
-					}
-					try {
-						duration += Integer.parseInt(durationS.GetText()) * 0001;
-					} catch (Exception e) {
-					}
-					newAudio.userInit(0, name.GetText(), Integer.parseInt(release.GetText()),
-							duration,
-							genre.GetText(), preview.GetText(), Double.parseDouble(price.GetText()), hidden.GetSelected(), creator.GetText());
+					newAudio.userInit(0, title, releaseYear, duration, albumgenre, albumpreview, albumcost, albumhidden, artist);
 					DataLoader.addItemToList(newAudio);
 				} else if (audioBookRadio.GetSelected()) {
 					Audiobook newAudio = new Audiobook();
-					newAudio.userInit(0, name.GetText(), Integer.parseInt(release.GetText()),
-							((Integer.parseInt(durationH.GetText()) * 3600) + (Integer.parseInt(durationM.GetText()) * 60) + Integer.parseInt(durationS.GetText())),
-							genre.GetText(), preview.GetText(), Double.parseDouble(price.GetText()), hidden.GetSelected(), creator.GetText());
+					newAudio.userInit(0, title, releaseYear, duration, albumgenre, albumpreview, albumcost, albumhidden, artist);
 					DataLoader.addItemToList(newAudio);
 				} else if (FilmRadio.GetSelected()) {
 					Film newAudio = new Film();
-					newAudio.userInit(0, name.GetText(), Integer.parseInt(release.GetText()),
-							((Integer.parseInt(durationH.GetText()) * 3600) + (Integer.parseInt(durationM.GetText()) * 60) + Integer.parseInt(durationS.GetText())),
-							genre.GetText(), preview.GetText(), Double.parseDouble(price.GetText()), hidden.GetSelected(), creator.GetText());
+					newAudio.userInit(0, title, releaseYear, duration, albumgenre, albumpreview, albumcost, albumhidden, artist);
 					DataLoader.addItemToList(newAudio);
 				}
 				Driver.GetGuiMain().GetTextBoxes();
@@ -477,34 +472,33 @@ public class ManagementEvents implements Gui.EventImplementation {
 			next.GetParent().RemoveChild(next);
 		}
 		if (ItemStatsPanel != null) {
-			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
+			ItemStatsPanel.SetParent(null);
 		}
 		Edit = new Frame("NewItem", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
-		albumRadio = new RadioButton("albumRadio", new DPair(0, 40, 0, 40), new DPair(0.08, 0, 0.05, 0), ColorScheme, Edit, "Album", 14);
-		audioBookRadio = new RadioButton("audioBookRadio", new DPair(0, 120, 0, 40), new DPair(0.13, 0, 0.05, 0), ColorScheme, Edit, "AudioBook", 14);
-		FilmRadio = new RadioButton("FilmRadio", new DPair(0, 220, 0, 40), new DPair(0.06, 0, 0.05, 0), ColorScheme, Edit, "Film", 14);
-		new TextLabel("Name", new DPair(0, 40, 0, 65), new DPair(0.1, 0, 0.05, 0), ColorScheme, Edit, "Name: ", 14);
-		name = new TextBox("NameTwo", new DPair(0, 110, 0, 65), new DPair(0.5, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("Release", new DPair(0, 40, 0, 90), new DPair(0.2, 0, 0.05, 0), ColorScheme, Edit, "Year of Release: ", 14);
-		release = new TextBox("ReleaseTwo", new DPair(0, 170, 0, 90), new DPair(0.5, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("Duration", new DPair(0, 40, 0, 115), new DPair(0.12, 0, 0.05, 0), ColorScheme, Edit, "Duration: ", 14);
-		new TextLabel("DurationH", new DPair(0, 120, 0, 115), new DPair(0.06, 0, 0.05, 0), ColorScheme, Edit, "H: ", 14);
-		durationH = new TextBox("DurationHTwo", new DPair(0, 140, 0, 115), new DPair(0.06, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("DurationM", new DPair(0, 185, 0, 115), new DPair(0.06, 0, 0.05, 0), ColorScheme, Edit, "M: ", 14);
-		durationM = new TextBox("DurationMTwo", new DPair(0, 210, 0, 115), new DPair(0.06, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("DurationS", new DPair(0, 255, 0, 115), new DPair(0.06, 0, 0.05, 0), ColorScheme, Edit, "S: ", 14);
-		durationS = new TextBox("DurationSTwo", new DPair(0, 270, 0, 115), new DPair(0.06, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("Genre", new DPair(0, 40, 0, 140), new DPair(0.09, 0, 0.05, 0), ColorScheme, Edit, "Genre: ", 14);
-		genre = new TextBox("GenreTwo", new DPair(0, 105, 0, 140), new DPair(0.5, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("Preview", new DPair(0, 40, 0, 165), new DPair(0.11, 0, 0.05, 0), ColorScheme, Edit, "Preview: ", 14);
-		preview = new TextBox("PreveiwTwo", new DPair(0, 110, 0, 165), new DPair(0.5, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		new TextLabel("Price", new DPair(0, 40, 0, 190), new DPair(0.1, 0, 0.05, 0), ColorScheme, Edit, "Price $: ", 14);
-		price = new TextBox("PriceTwo", new DPair(0, 110, 0, 190), new DPair(0.5, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		hidden = new CheckBox("Hidden", new DPair(0, 40, 0, 215), new DPair(0.1, 0, 0.05, 0), ColorScheme, Edit, "Hidden?", 14);
-		new TextLabel("Creator", new DPair(0, 40, 0, 240), new DPair(0.1, 0, 0.05, 0), ColorScheme, Edit, "Creator: ", 14);
-		creator = new TextBox("CreatorTwo", new DPair(0, 110, 0, 240), new DPair(0.5, 0, 0.05, 0), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
-		saveItem = new TextButton("SaveItemNew", new DPair(0, 340, 0, Driver.GetGuiMain().GetWindow().getSize().height - 100),
-				new DPair(0.2, 0, 0.09, 0), ColorScheme, Edit, "Save", 14);
+		albumRadio = new RadioButton("albumRadio", new DPair(0, 40, 0, 40), new DPair(0, 74, 0, 19), ColorScheme, Edit, "Album", 14);
+		audioBookRadio = new RadioButton("audioBookRadio", new DPair(0, 120, 0, 40), new DPair(0, 94, 0, 19), ColorScheme, Edit, "AudioBook", 14);
+		FilmRadio = new RadioButton("FilmRadio", new DPair(0, 220, 0, 40), new DPair(0, 74, 0, 19), ColorScheme, Edit, "Film", 14);
+		new TextLabel("Name", new DPair(0, 40, 0, 65), new DPair(0, 64, 0, 19), ColorScheme, Edit, "Name: ", 14);
+		name = new TextBox("NameTwo", new DPair(0, 110, 0, 65), new DPair(0, 390, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("Release", new DPair(0, 40, 0, 90), new DPair(0, 124, 0, 19), ColorScheme, Edit, "Year of Release: ", 14);
+		release = new TextBox("ReleaseTwo", new DPair(0, 170, 0, 90), new DPair(0, 330, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("Duration", new DPair(0, 40, 0, 115), new DPair(0, 74, 0, 19), ColorScheme, Edit, "Duration: ", 14);
+		new TextLabel("DurationH", new DPair(0, 120, 0, 115), new DPair(0, 20, 0, 19), ColorScheme, Edit, "H: ", 14);
+		durationH = new TextBox("DurationHTwo", new DPair(0, 140, 0, 115), new DPair(0, 40, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("DurationM", new DPair(0, 185, 0, 115), new DPair(0, 40, 0, 19), ColorScheme, Edit, "M: ", 14);
+		durationM = new TextBox("DurationMTwo", new DPair(0, 210, 0, 115), new DPair(0, 40, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("DurationS", new DPair(0, 255, 0, 115), new DPair(0, 40, 0, 19), ColorScheme, Edit, "S: ", 14);
+		durationS = new TextBox("DurationSTwo", new DPair(0, 270, 0, 115), new DPair(0, 40, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("Genre", new DPair(0, 40, 0, 140), new DPair(0, 59, 0, 19), ColorScheme, Edit, "Genre: ", 14);
+		genre = new TextBox("GenreTwo", new DPair(0, 105, 0, 140), new DPair(0, 395, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("Preview", new DPair(0, 40, 0, 165), new DPair(0, 64, 0, 19), ColorScheme, Edit, "Preview: ", 14);
+		preview = new TextBox("PreveiwTwo", new DPair(0, 110, 0, 165), new DPair(0, 390, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		new TextLabel("Price", new DPair(0, 40, 0, 190), new DPair(0, 64, 0, 19), ColorScheme, Edit, "Price $: ", 14);
+		price = new TextBox("PriceTwo", new DPair(0, 110, 0, 190), new DPair(0, 390, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		hidden = new CheckBox("Hidden", new DPair(0, 40, 0, 215), new DPair(0, 100, 0, 19), ColorScheme, Edit, "Hidden?", 14);
+		new TextLabel("Creator", new DPair(0, 40, 0, 240), new DPair(0, 64, 0, 19), ColorScheme, Edit, "Creator: ", 14);
+		creator = new TextBox("CreatorTwo", new DPair(0, 110, 0, 240), new DPair(0, 390, 0, 19), Color.WHITE, Edit, "", 14, new Color(0, 0, 0));
+		saveItem = new TextButton("SaveItemNew", new DPair(0, 340, 0, 270), new DPair(0, 100, 0, 30), ColorScheme, Edit, "Save", 14);
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 
@@ -519,4 +513,11 @@ public class ManagementEvents implements Gui.EventImplementation {
 	@Override
 	public void MouseMove(GuiObject button, int x, int y) {
 	}
+	
+	@Override
+	public void onWindowShown() {
+		ButtonClicked(leftPanel.GetChild("Accounts"), 0, 0);
+	}
+	@Override public void onWindowHide() {	}
+	@Override public void onWindowResize() {}
 }
