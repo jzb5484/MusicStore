@@ -6,6 +6,8 @@ import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JFrame;
@@ -56,6 +58,16 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		borderWidth = application.getInsets();
 		application.addMouseListener(this);
 		application.addMouseMotionListener(this);
+//		application.addWindowStateListener(null);
+		application.addWindowListener(new WindowListener() {
+			@Override public void windowDeactivated(WindowEvent e) {}
+			@Override public void windowActivated(WindowEvent e) {}
+			@Override public void windowDeiconified(WindowEvent e) {}
+			@Override public void windowIconified(WindowEvent e) {}
+			@Override public void windowClosed(WindowEvent e) {}
+			@Override public void windowClosing(WindowEvent e) {}
+			@Override public void windowOpened(WindowEvent e) {}
+		});
 		
 		GetTextBoxes(Main);
 	}

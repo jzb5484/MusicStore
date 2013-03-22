@@ -24,7 +24,7 @@ public class ScrollBar extends GuiObject {
 	public final int GetAbsoluteBarSizeY() {return BarSizeY;}
 	public final int GetAbsoluteBarPositionY() {return BarPosY;}
 	public final void SetValue(float val) {CurrentValue = Math.max(0, Math.min(MaxValue, val)); if (Main != null) {Main.repaint();}}
-	public final void SetMax(float max) {MaxValue = max; if (Main != null) {Main.repaint();}}
+	public final void SetMax(float max) {MaxValue = Math.max(0, max); CurrentValue = Math.min(MaxValue, CurrentValue); if (Main != null) {Main.repaint();}}
 	public final void SetFrameSize(float newSize) {FrameSize = newSize; if (Main != null) {Main.repaint();}}
 
 	public ScrollBar(String name, DPair position, DPair size, Color color, GuiObject parent, float maxSize, float frameSize) {

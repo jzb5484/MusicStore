@@ -38,9 +38,12 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	private int ViewIndex = 0; // determines which index represents the top most box in the scroll list
 	private ArrayList<Frame> ScrollList = new ArrayList();
 
+	private final int LIST_ELEMENT_HEIGHT = 35;
+	private final int LIST_ELEMENT_SPACING = 5;
+	
 	private void AddListElement() {
 		// ScrollList should never exceed the number of elements in the current list.
-		Frame newFrame = new Frame("ScrollList" + ScrollList.size(), new DPair(0, 0, 0, 0), new DPair(1, 0, 0, 35), Driver.ColorScheme, CenterScrollFrame);
+		Frame newFrame = new Frame("ScrollList" + ScrollList.size(), new DPair(0, 0, 0, 0), new DPair(1, 0, 0, LIST_ELEMENT_HEIGHT), Driver.ColorScheme, CenterScrollFrame);
 		new TextLabel("TopText", new DPair(0, 3, 0, 3), new DPair(1, -58, .5, -3), ColorExtension.Lighten(Driver.ColorScheme, .15), newFrame, "My Text", 10);
 		new TextLabel("BottomText", new DPair(0, 0, .5, 0), new DPair(1, -52, .5, 0), Driver.ColorScheme, newFrame, "My Text", 10);
 		new Frame("Divider", new DPair(1, -52, 0, 2), new DPair(0, 2, 1, -4), Color.WHITE, newFrame);
@@ -86,12 +89,13 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 			return;
 		}
 		int MaximumIndex = ActiveList.size();
+		LibScroll.SetMax(Math.max(0, MaximumIndex * (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING) - Driver.GetGuiMain().GetWindow().getHeight() + 50));
 		PixelOffset = (int) LibScroll.GetValue();
 		ViewIndex = (int) Math.floor((double) PixelOffset / 40);
 		for (int i = 0; i < ScrollList.size(); i++) {
 			// Position the frame appropriately.
 			current = ScrollList.get(i);
-			current.GetPosition().yOffset = i * 40 - PixelOffset % 40;
+			current.GetPosition().yOffset = i * (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING) - PixelOffset % (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING);
 			rowOne = (TextLabel) current.GetChild("TopText");
 			rowTwo = (TextLabel) current.GetChild("BottomText");
 			commandButton = (TextButton) current.GetChild("Action");
@@ -165,6 +169,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		SetFrames();
 	}
 	@Override public void onWindowHide() {	}
+	@Override public void onWindowResize() {
+		SetFrames();
+	}
 	
 	@Override
 	public void MouseDown(GuiObject button, int x, int y) {

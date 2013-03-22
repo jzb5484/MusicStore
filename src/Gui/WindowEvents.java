@@ -11,4 +11,5 @@ package Gui;
 public interface WindowEvents {
 	public void onWindowShown();
 	public void onWindowHide();
+	public void onWindowResize();
 }

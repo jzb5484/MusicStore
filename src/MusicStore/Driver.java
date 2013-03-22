@@ -1,6 +1,10 @@
 /**
- * Names:	Jackson Burlew Jonathan Maderic Yoonsung Son Section:	1 Program:	Term Project
- * Phase 2 Date:	1 Mar 2013
+ * Names:	Jackson Burlew
+ *		Jonathan Maderic
+ *		Yoonsung Son
+ * Section:	1
+ * Program:	Term Project Phase 2
+ * Phase 2 Date:	22 Mar 2013
  */
 package MusicStore;
 
