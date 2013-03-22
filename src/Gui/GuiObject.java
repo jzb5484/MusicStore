@@ -16,6 +16,7 @@ public class GuiObject {
 	protected DPair Position;
 	protected DPair Size;
 	protected Color GuiColor;
+	protected boolean Visible;
 	
 	// These properties can only be gotten.
 	private GuiObject Parent;
@@ -35,10 +36,12 @@ public class GuiObject {
 	public DPair GetSize() {return Size;}
 	public Color GetColor() {return GuiColor;}
 	public GuiMain GetMain() {return Main;}
+	public boolean GetVisible() {return Visible;}
 	public void SetName(String n) {if (n != null) {Name = n;}}
 	public void SetPosition(DPair p) {if (p != null) {Position = p;}}
 	public void SetSize(DPair s) {if (s != null) {Size = s;}}
 	public void SetColor(Color c) {if (c != null) {GuiColor = c;}}
+	public void SetVisible(boolean v) {Visible = v;}
 	public void SetMain(GuiMain main) {
 		Main = main;
 		// Call setMain on all children.
@@ -112,6 +115,7 @@ public class GuiObject {
 			Parent.AddChild(this);
 		}
 		Children = new ArrayList();
+		Visible = true;
 	}
 	
 	public void draw(Graphics g, int parentX, int parentY, int parentWidth, int parentHeight) {

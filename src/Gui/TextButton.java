@@ -17,9 +17,9 @@ public class TextButton extends GuiObject {
 	private boolean Clicked = false;
 	private boolean Hovering = false;
 
-	public void SetTextColor(Color c) {TextColor = (c == null ? TextColor : c);}
-	public void SetText(String text) {Text = text;}
-	public void SetFont(Font f) {TextFont = f;}
+	public void SetTextColor(Color c) {TextColor = (c == null ? TextColor : c); Main.repaint();}
+	public void SetText(String text) {Text = text; Main.repaint();}
+	public void SetFont(Font f) {TextFont = f; Main.repaint();}
 	public Color GetTextColor() {return TextColor;}
 	public String GetText() {return Text;}
 	public Font GetFont() {return TextFont;}
@@ -52,20 +52,22 @@ public class TextButton extends GuiObject {
 			AbsoluteSizeX = this.Size.xOffset + (int) (this.Size.xScale * parentWidth);
 			AbsoluteSizeY = this.Size.yOffset + (int) (this.Size.yScale * parentHeight);
 
-			if (Clicked) {g.setColor(HighlightColor2);}
-			else if (Hovering) {g.setColor(HighlightColor1);}
-			else {g.setColor(GuiColor);}
-			g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY);
+			if (Visible) {
+				if (Clicked) {g.setColor(HighlightColor2);}
+				else if (Hovering) {g.setColor(HighlightColor1);}
+				else {g.setColor(GuiColor);}
+				g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY);
 
-			if (Clicked) {g.setColor(HighlightColor3);}
-			else if (Hovering) {g.setColor(HighlightColor2);}
-			else {g.setColor(HighlightColor1);}
-			g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY / 2);
-			
-			g.setFont(TextFont);
-			g.setColor(TextColor);
-			int fontHeight = TextFont.getSize();
-			g.drawString(Text, AbsolutePositionX + 2, AbsolutePositionY - 3 + (AbsoluteSizeY + fontHeight) / 2);
+				if (Clicked) {g.setColor(HighlightColor3);}
+				else if (Hovering) {g.setColor(HighlightColor2);}
+				else {g.setColor(HighlightColor1);}
+				g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY / 2);
+
+				g.setFont(TextFont);
+				g.setColor(TextColor);
+				int fontHeight = TextFont.getSize();
+				g.drawString(Text, AbsolutePositionX + 2, AbsolutePositionY - 3 + (AbsoluteSizeY + fontHeight) / 2);
+			}
 
 			Iterator<GuiObject> i = this.GetChildren();
 			while (i.hasNext()) {

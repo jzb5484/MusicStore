@@ -83,17 +83,19 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	
 	private void GetTextBoxes(GuiObject Root) {
 		if (Root == null) { return; }
-		if (Root instanceof TextButton && !Buttons.contains(Root)) {
-			this.Buttons.add(Root);
-		} else if (Root instanceof TextBox) {
-			this.Buttons.add(Root);
-			((TextBox) Root).Init(this);
-		} else if (Root instanceof ScrollBar) {
-			this.Buttons.add(Root);
-		} else if (Root instanceof CheckBox) {
-			Buttons.add(Root);
-		} else if (Root instanceof RadioButton) {
-			Buttons.add(Root);
+		if (Root.Visible) {
+			if (Root instanceof TextButton && !Buttons.contains(Root)) {
+				this.Buttons.add(Root);
+			} else if (Root instanceof TextBox) {
+				this.Buttons.add(Root);
+				((TextBox) Root).Init(this);
+			} else if (Root instanceof ScrollBar) {
+				this.Buttons.add(Root);
+			} else if (Root instanceof CheckBox) {
+				Buttons.add(Root);
+			} else if (Root instanceof RadioButton) {
+				Buttons.add(Root);
+			}
 		}
 		Iterator<GuiObject> i = Root.GetChildren();
 		while (i.hasNext()) {

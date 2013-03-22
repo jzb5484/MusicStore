@@ -88,7 +88,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 		if (ItemStatsPanel != null) {
 			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
 		}
-		ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+		ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 		while (numberOfItemsOnPage < NUMBER_ITEMS_PER_PAGE && numberOfItemsRemain > 0) {
 			if (i.hasNext()) {
 				currentItem = itemSet.get(i.next());
@@ -144,7 +144,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 		if (UserStatsPanel != null) {
 			UserStatsPanel.GetParent().RemoveChild(UserStatsPanel);
 		}
-		UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+		UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 		while (numberOfItemsOnPage < NUMBER_ITEMS_PER_PAGE && numberOfItemsRemain > 0) {
 			if (a.hasNext()) {
 				currentUser = users.get(a.next());
@@ -203,7 +203,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
-				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 				numberOfItems = DataLoader.getAlbums().size() + DataLoader.getAudiobooks().size() + DataLoader.getFilm().size();
 				numberOfItemsRemain = numberOfItems;
 				numberOfItemsOnPage = 0;
@@ -231,7 +231,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 					Edit.GetParent().RemoveChild(Edit);
 				}
 				Driver.GetGuiMain().removeAll();
-				UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+				UserStatsPanel = new Frame("UserStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 				numberOfItems = DataLoader.getUserCount();
 				System.out.println(numberOfItems);
 				numberOfItemsRemain = numberOfItems;
@@ -326,7 +326,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 				if (saveItem != null) {
 					saveItem.GetParent().RemoveChild(saveItem);
 				}
-				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 				numberOfItems = DataLoader.getAlbums().size() + DataLoader.getAudiobooks().size() + DataLoader.getFilm().size();
 				numberOfItemsRemain = numberOfItems;
 				numberOfItemsOnPage = 0;
@@ -357,7 +357,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
-				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+				ItemStatsPanel = new Frame("ItemStatsPanel", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 				numberOfItems = DataLoader.getAlbums().size() + DataLoader.getAudiobooks().size() + DataLoader.getFilm().size();
 				numberOfItemsRemain = numberOfItems;
 				numberOfItemsOnPage = 0;
@@ -422,7 +422,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 		if (ItemStatsPanel != null) {
 			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
 		}
-		Edit = new Frame("EditItem", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+		Edit = new Frame("EditItem", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 		backToItemStat = new TextButton("BackToItemStat", new DPair(0, 40, 0, Driver.GetGuiMain().GetWindow().getSize().height - 100),
 				new DPair(0.2, 0, 0.09, 0), ColorScheme, Edit, "Back To Items", 14);
 		new TextLabel("ID", new DPair(0, 40, 0, 40), new DPair(0.04, 0, 0.05, 0), ColorScheme, Edit, "Id: ", 14);
@@ -479,7 +479,7 @@ public class ManagementEvents implements Gui.EventImplementation {
 		if (ItemStatsPanel != null) {
 			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
 		}
-		Edit = new Frame("NewItem", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.RED, MainFrame);
+		Edit = new Frame("NewItem", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 20, 1, -20), Color.WHITE, MainFrame);
 		albumRadio = new RadioButton("albumRadio", new DPair(0, 40, 0, 40), new DPair(0.08, 0, 0.05, 0), ColorScheme, Edit, "Album", 14);
 		audioBookRadio = new RadioButton("audioBookRadio", new DPair(0, 120, 0, 40), new DPair(0.13, 0, 0.05, 0), ColorScheme, Edit, "AudioBook", 14);
 		FilmRadio = new RadioButton("FilmRadio", new DPair(0, 220, 0, 40), new DPair(0.06, 0, 0.05, 0), ColorScheme, Edit, "Film", 14);

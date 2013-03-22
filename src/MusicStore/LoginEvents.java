@@ -24,8 +24,8 @@ public class LoginEvents implements Gui.EventImplementation {
         new Frame("LoginPanelStripe", new DPair(0, 0, 0, 0), new DPair(1, 0, 0.5, 0), ColorExtension.Lighten(Driver.ColorScheme, .1), LoginPanel);
         new TextButton("Login", new DPair(0, 0, 1, 10), new DPair(1, 0, 0, 24), Driver.ColorScheme, LoginPanel, "Login", 16);
         new TextLabel("Desc", new DPair(0, 5, 0, 0), new DPair(1, -10, 0.333, -5), new Color(0, 0, 0, 0), LoginPanel, "Login", 14);
-        username = new TextBox("Username", new DPair(0, 5, .333, 0), new DPair(1, -10, 0.333, -5), Color.WHITE, LoginPanel, "Username", 14, new Color(0, 0, 0));
-        password = new TextBox("Password", new DPair(0, 5, .666, 0), new DPair(1, -10, 0.333, -5), Color.WHITE, LoginPanel, "Password", 14, new Color(0, 0, 0));
+        username = new TextBox("Username", new DPair(0, 5, .333, 0), new DPair(1, -10, 0.333, -5), Color.WHITE, LoginPanel, "administrator", 14, new Color(0, 0, 0));
+        password = new TextBox("Password", new DPair(0, 5, .666, 0), new DPair(1, -10, 0.333, -5), Color.WHITE, LoginPanel, "admin", 14, new Color(0, 0, 0));
         password.SetPasswordField(true);
     }
 

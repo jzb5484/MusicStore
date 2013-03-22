@@ -43,9 +43,21 @@ public class TextLabel extends GuiObject {
 			g.fillRect(AbsolutePositionX, AbsolutePositionY, AbsoluteSizeX, AbsoluteSizeY);
 
 			g.setFont(TextFont);
+			String displayText = Text;
+			int overdraw = g.getFontMetrics().stringWidth(displayText) - AbsoluteSizeX + 2;
+			while (overdraw > 0) {
+				if (displayText.length() - (int) Math.ceil(overdraw / 10.0) <= 0) {
+					displayText = "";
+					break;
+				}
+				displayText = displayText.substring(0, displayText.length() - (int) Math.ceil(overdraw / 10.0));
+				overdraw = g.getFontMetrics().stringWidth(displayText) - AbsoluteSizeX + 2;
+			}
 			g.setColor(TextColor);
 			int fontHeight = TextFont.getSize();
-			g.drawString(Text, AbsolutePositionX + 2, AbsolutePositionY - 3 + (AbsoluteSizeY + fontHeight) / 2);
+			if (!displayText.equals("")) {
+				g.drawString(displayText, AbsolutePositionX + 2, AbsolutePositionY - 3 + (AbsoluteSizeY + fontHeight) / 2);
+			}
 
 			Iterator<GuiObject> i = this.GetChildren();
 			while (i.hasNext()) {

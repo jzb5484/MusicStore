@@ -31,11 +31,11 @@ public class DataLoader {
 		Iterator<Integer> i = itemSet.keySet().iterator();
 		while (i.hasNext()) {
 			Item item = itemSet.get(i.next());
-			if (item instanceof Film && !filmSet.contains((Film) item)) {
+			if (item instanceof Film && !filmSet.contains((Film) item) && !item.isVisible()) {
 				filmSet.add((Film) item);
-			} else if (item instanceof Album && !albumSet.contains((Album) item)) {
+			} else if (item instanceof Album && !albumSet.contains((Album) item) && !item.isVisible()) {
 				albumSet.add((Album) item);
-			} else if (item instanceof Audiobook && !audiobookSet.contains((Audiobook) item)) {
+			} else if (item instanceof Audiobook && !audiobookSet.contains((Audiobook) item) && !item.isVisible()) {
 				audiobookSet.add((Audiobook) item);
 			}
 		}

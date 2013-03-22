@@ -15,8 +15,8 @@ import java.awt.Color;
 
 public class Driver {
 
-	public static Color ColorScheme = ColorExtension.RandomBelow(200);
-	//new Color(19, 79, 92);
+	public static Color ColorScheme = //ColorExtension.RandomBelow(200);
+	new Color(19, 79, 92);
 	private static GuiMain Main;
 	//creates the login frame
 	private static Frame LoginFrame;

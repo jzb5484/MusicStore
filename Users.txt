@@ -20,7 +20,21 @@ administrator
 admin
 mr. administrator
 1 Main St.
-45.0
+59.999999999999986
 true
 Purchase History
+35
+33
+4
+1
+3
+2
+37
 Ratings
+0
+0
+0
+0
+0
+0
+0
