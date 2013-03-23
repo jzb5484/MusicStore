@@ -17,9 +17,9 @@ Purchase History
 1
 35
 Ratings
-0
-0
-0
+5
+1
+4
 administrator
 admin
 mr. administrator
@@ -48,3 +48,11 @@ Ratings
 0
 0
 0
+new user
+password
+New User
+1234 Sandy Ln
+45.0
+false
+Purchase History
+Ratings

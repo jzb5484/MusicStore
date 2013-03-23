@@ -17,7 +17,10 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	private Frame leftPanel;
 	private Frame CreditAdd;
 	private Frame ModifyItem;
+	private Frame Help;
+	private Frame RatingWindow;
 	public Item CurrentPlayingItem = null;
+	private int CurrentRatingId;
 
 	public final void MakeElements() {
 		Color ColorScheme = Driver.ColorScheme;
@@ -33,6 +36,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		new TextButton("ViewFilms", new DPair(0, 18, 0, 156), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Films", 14);
 		ManagementButton = new TextButton("ManagementButton", new DPair(0, 0, 0, 186), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Mgmt Tools", 18);
 		AccountCredit = new TextButton("AccountCredit", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Credit: $25.00", 14);
+		new TextButton("Help", new DPair(0, 0, 1, -60), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Help", 14);
 		CenterScrollFrame = new Frame("CenterFrame", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 50, 1, -20), Color.WHITE, MainFrame);
 		LibScroll = new ScrollBar("Scroll", new DPair(1, -30, 0, 10), new DPair(0, 20, 1, -20), ColorScheme, MainFrame, 2000, 200);
 		
@@ -66,6 +70,26 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		new CheckBox("HiddenInput", new DPair(0, 108, 0, 180), new DPair(0, 100, 0, 18), Driver.ColorScheme, ModifyItem, "Hidden", 12);
 		new TextButton("SubmitChanges", new DPair(0, 4, 1, -26), new DPair(0, 140, 0, 20), Driver.ColorScheme, ModifyItem, "Submit Changes", 14);
 		new TextButton("CloseModifyWindow", new DPair(1, -30, 1, -26), new DPair(0, 26, 0, 20), Driver.ColorScheme, ModifyItem, "X", 14);
+		
+		Help = new Frame("HelpFrame", new DPair(0.5, -150, 0.5, -200), new DPair(0, 300, 0, 400), Driver.ColorScheme, null);
+		new Frame("InsideBorder", new DPair(0, 3, 0, 3), new DPair(1, -6, 1, -6), Color.WHITE, Help);
+		String[] info = {
+		"View your personal library by pressing the", "\"Library\" button to the left. View everything", "available in the store by pressing \"Store\",", "or filter your results down to albums,", "audiobooks, or films by pressing the", "respective buttons. Purchase items by",  "pressing the “Buy” button.",
+		"", "Need more credit? Click the button in the", "lower left showing how much credit you", "have."
+		};
+		for (int i = 0; i < info.length; i++) {
+			new TextLabel("label", new DPair(0, 4, 0, i * 24 + 4), new DPair(1, -8, 0, 18), Color.WHITE, Help, info[i], 12).SetTextColor(Driver.ColorScheme);
+		}
+		new TextButton("CloseHelpWindow", new DPair(.7, -4, 1, -26), new DPair(.3, 0, 0, 20), Driver.ColorScheme, Help, "Close", 14);
+		
+		RatingWindow = new Frame("Rating", new DPair(0, 0, 0, 0), new DPair(0, 120, 0, 146), Driver.ColorScheme, null);
+		new TextLabel("Rating", new DPair(0, 3, 0, 3), new DPair(1, -6, 0, 17), Color.WHITE, RatingWindow, "Rating", 12).SetTextColor(Driver.ColorScheme);
+		new TextButton("1star", new DPair(0, 3, 0, 23), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "*", 12);
+		new TextButton("2star", new DPair(0, 3, 0, 43), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "**", 12);
+		new TextButton("3star", new DPair(0, 3, 0, 63), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "***", 12);
+		new TextButton("4star", new DPair(0, 3, 0, 83), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "****", 12);
+		new TextButton("5star", new DPair(0, 3, 0, 103), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "*****", 12);
+		new TextButton("0star", new DPair(0, 3, 0, 123), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "n/a", 12);
 	}
 
 	private int CurrentModifyWindowId = 0;
@@ -125,11 +149,11 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	
 	private int GetItemIdOfFrame(Frame frame) {
 		PixelOffset = (int) LibScroll.GetValue();
-		ViewIndex = (int) Math.floor((double) PixelOffset / 40);
+		ViewIndex = (int) Math.floor((double) PixelOffset / (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING));
 		int id = ViewIndex + ScrollList.indexOf(frame);
 		if (CurrentList == 0) {
 			return (int) ActiveList.get(id);
-		} else if (CurrentList >= 1 && CurrentList <= 3) {
+		} else if (CurrentList >= 1 && CurrentList <= 4) {
 			return (int) ((Item) ActiveList.get(id)).getId();
 		}
 		return 0;
@@ -161,6 +185,27 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				for (int i = 0; i < temporaryList.size(); i++) {
 					ActiveList.add(temporaryList.get(i));
 				}
+			} else if (CurrentList == 4) {
+				temporaryList = DataLoader.getAlbums();
+				for (int i = 0; i < temporaryList.size(); i++) {
+					if (temporaryList.get(i) instanceof Item && (!((Item) temporaryList.get(i)).isVisible() || Driver.CurrentUser.getAdministrator())) {
+						ActiveList.add(temporaryList.get(i));
+					}
+				}
+				
+				temporaryList = DataLoader.getAudiobooks();
+				for (int i = 0; i < temporaryList.size(); i++) {
+					if (temporaryList.get(i) instanceof Item && (!((Item) temporaryList.get(i)).isVisible() || Driver.CurrentUser.getAdministrator())) {
+						ActiveList.add(temporaryList.get(i));
+					}
+				}
+				
+				temporaryList = DataLoader.getFilm();
+				for (int i = 0; i < temporaryList.size(); i++) {
+					if (temporaryList.get(i) instanceof Item && (!((Item) temporaryList.get(i)).isVisible() || Driver.CurrentUser.getAdministrator())) {
+						ActiveList.add(temporaryList.get(i));
+					}
+				}
 			}
 			LastCurrentListValue = CurrentList;
 		}
@@ -187,6 +232,14 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				CenterScrollFrame.AddChild(current);
 				// Fill the text labels with content based on what view option is selected.
 				if (CurrentList == 0) {
+					if (!current.GetChild("Action2").GetVisible() && !Driver.CurrentUser.getAdministrator()) {
+						current.GetChild("Divider").GetPosition().xOffset = -99;
+						current.GetChild("TopText").GetSize().xOffset = -105;
+						current.GetChild("BottomText").SetSize(current.GetChild("TopText").GetSize());
+						current.GetChild("Action2").SetVisible(true);
+						((TextButton) current.GetChild("Action2")).SetText("Rate");
+						Driver.GetGuiMain().GetTextBoxes();
+					}
 					Item currentItem = DataLoader.getItemById(((Integer) ActiveList.get(i + ViewIndex)).intValue());
 					SetListText(rowOne, rowTwo, currentItem);
 					if (CurrentPlayingItem == currentItem) {
@@ -195,6 +248,12 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 						commandButton.SetText("Play");
 					}
 				} else if (CurrentList >= 1 && CurrentList <= 4) {
+					if (current.GetChild("Action2").GetVisible() && !Driver.CurrentUser.getAdministrator()) {
+						current.GetChild("Divider").GetPosition().xOffset = -52;
+						current.GetChild("TopText").GetSize().xOffset = -58;
+						current.GetChild("BottomText").SetSize(current.GetChild("TopText").GetSize());
+						current.GetChild("Action2").SetVisible(false);
+					}
 					Item currentItem = (Item) ActiveList.get(i + ViewIndex);
 					SetListText(rowOne, rowTwo, currentItem);
 					if (currentItem.isVisible()) {rowTwo.SetText(rowTwo.GetText() + "; HIDDEN");}
@@ -215,8 +274,8 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	public LibraryEvents() {
 		int WindowHeight = Driver.GetGuiMain().GetWindow().getSize().height;
 		MakeElements();
-		int NumberOfFrames = (int) ((double) WindowHeight / 40.0);
-		System.out.println("Height of window: " + WindowHeight);
+		int NumberOfFrames = (int) ((double) WindowHeight / (LIST_ELEMENT_HEIGHT));
+//		System.out.println("Height of window: " + WindowHeight);
 		for (int i = 0; i < 12; i++) { // number of scrolling frames is determined by height of window or number of albums to display.
 			AddListElement();
 		}
@@ -229,7 +288,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				CurrentList = 0;
 				break;
 			case "StoreButton":
-				CurrentList = 1;
+				CurrentList = 4;
 				break;
 			case "ViewAlbums":
 				CurrentList = 1;
@@ -293,9 +352,14 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				}
 				break;
 			case "Action2":
-				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Edit") && CurrentList >= 0 && CurrentList <= 3) {
+				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Edit") && CurrentList >= 0 && CurrentList <= 4) {
 					int id = GetItemIdOfFrame((Frame) button.GetParent());
 					SetModify(id);
+				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Rate") && CurrentList == 0) {
+					CurrentRatingId = GetItemIdOfFrame((Frame) button.GetParent());
+					RatingWindow.SetParent(MainFrame);
+					RatingWindow.SetPosition(new DPair(0, x - RatingWindow.GetSize().xOffset, 0, y));
+					Driver.GetGuiMain().GetTextBoxes();
 				}
 				break;
 			case "HiddenInput":
@@ -328,6 +392,45 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				break;
 			case "CloseModifyWindow":
 				ModifyItem.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "CloseHelpWindow":
+				Help.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "Help":
+				Help.SetParent(MainFrame);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "1star":
+				System.out.println("CurrentRatingId: " + CurrentRatingId);
+				Driver.CurrentUser.rateItem(CurrentRatingId, 1);
+				RatingWindow.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "2star":
+				Driver.CurrentUser.rateItem(CurrentRatingId, 2);
+				RatingWindow.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "3star":
+				Driver.CurrentUser.rateItem(CurrentRatingId, 3);
+				RatingWindow.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "4star":
+				Driver.CurrentUser.rateItem(CurrentRatingId, 4);
+				RatingWindow.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "5star":
+				Driver.CurrentUser.rateItem(CurrentRatingId, 5);
+				RatingWindow.SetParent(null);
+				Driver.GetGuiMain().GetTextBoxes();
+				break;
+			case "0star":
+				Driver.CurrentUser.rateItem(CurrentRatingId, 0);
+				RatingWindow.SetParent(null);
 				Driver.GetGuiMain().GetTextBoxes();
 				break;
 		}
