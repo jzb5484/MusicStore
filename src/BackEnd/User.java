@@ -307,10 +307,10 @@ public class User {
 
 		// ensure newRating is within bounds.
 		newRating = Math.max(Math.min(newRating, 5), 0);
-
+		
 		// Call addRating function for the item. Set the new rating value in user.
 		if (index != -1 && DataLoader.getItemById(id) != null) {
-			DataLoader.getItemById(id).addRating((int) ratings.get(id), newRating);
+			DataLoader.getItemById(id).addRating((int) ratings.get(index), newRating);
 			ratings.set(index, new Integer(newRating));
 		}
 	}

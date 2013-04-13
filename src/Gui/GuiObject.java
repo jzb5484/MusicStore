@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class GuiObject {
 
-	public static final String DEFAULT_FONT = "Segoe UI Symbol";
+	public static final String DEFAULT_FONT = "SansSerif";
 	public static final int DEFAULT_STYLE = Font.BOLD;
 
 	// These properties can all be gotten and set.

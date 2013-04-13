@@ -1,0 +1,18 @@
+administrator
+admin
+Mr. Admin
+1234 Drury Ln
+20.0
+true
+Purchase History
+Ratings
+new user
+password
+name
+address
+35.0
+false
+Purchase History
+1
+Ratings
+4
