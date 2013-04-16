@@ -31,6 +31,3 @@ insert into users
 (username, password, billing_name, address, credit, administrator, purchase_history, ratings) values
 ('administrator', 'admin', '', '', 0.00, true, '', '');
 
-/*insert into items (id, item_type, item_name, year_of_release, duration, genre, preview, number_sold, price, hidden, cumulative_ratings, num_ratings, creator)
-	values (1, 'Album', 'Test Album', 2000, 5000, 'Genre', '', 0, 10.50, false, 0, 0, 'Artist');*/
-

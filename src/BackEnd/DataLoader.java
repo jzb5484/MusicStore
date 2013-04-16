@@ -1,8 +1,6 @@
 package BackEnd;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -14,7 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataLoader {
 	private static ArrayList<Film> filmSet = new ArrayList();
@@ -121,7 +120,29 @@ public class DataLoader {
 				InFile.close();
 			}
 			
-			// TODO: Load users and items from database.
+			Results = SqlStatement.executeQuery("select * from users");
+			while (Results.next()) {
+				User x = new User(Results.getString("username"), Results.getString("password"),
+						Results.getString("billing_name"), Results.getString("address"), Results.getFloat("credit"),
+						Results.getBoolean("administrator"));
+				ArrayList<Integer> purchases = new ArrayList();
+				ArrayList<Integer> ratings = new ArrayList();
+				String read = Results.getString("purchase_history");
+				Pattern pattern = Pattern.compile("\\d+");
+				Matcher matcher = pattern.matcher(read);
+				while (matcher.find()) {
+					purchases.add(Integer.parseInt(matcher.group()));
+				}
+				x.setPurchaseHistory(purchases);
+				read = Results.getString("ratings");
+				matcher = pattern.matcher(read);
+				while (matcher.find()) {
+					ratings.add(Integer.parseInt(matcher.group()));
+				}
+				x.setRatings(ratings);
+				System.out.println("Loading user: " + Results.getString("username") + ", Password: " + Results.getString("password"));
+				users.put(Results.getString("username"), x);
+			}
 		}
 		catch(SQLException e) {
 			System.out.println("Problem with SQL.");
