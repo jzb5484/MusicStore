@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Set;
 
 public class DataLoader {
 	private static ArrayList<Film> filmSet = new ArrayList();
@@ -159,8 +160,25 @@ public class DataLoader {
 
 	public static void saveToFile() {
 		try {
-			// TODO: Save users and items to database.
-			
+			System.out.println("Saving...");
+			Set<String> iterableSet = users.keySet();
+			Iterator<String> i = iterableSet.iterator();
+			while (i.hasNext()) {
+				User x = users.get(i.next());
+				SqlStatement.executeQuery("update users set username = x.getUsername() , password = x.getPassword(), billing_name = x.getName(), address = x.getAddress(), "
+						+ "credit = x.getCredit(), administrator = x.getAdministrator(), purchase_history = x.getPurchaseHistory, ratings = x.getRatings() "
+						+ "where username =x.getUsername()");
+				}
+				HashMap<Integer, Item> set = DataLoader.itemSet;
+				Set<Integer> iterableSetItem = set.keySet();
+				Iterator<Integer> iItem = iterableSetItem.iterator();
+				while (iItem.hasNext()) {
+					Item xItem = set.get(iItem.next());
+					SqlStatement.executeQuery("update items set name = x.getName() , id = x.getId(), year_of_release =  x.getYearOfRelease(), duration = x.getTotalDuration(), "
+						+ "genre = x.getGenre(), preview = x.getPreview(), num_sold = x.getNumSold(), price = x.getPrice(), is_visible = x.isVisible(), cumulative_rating = x.getCumulativeRating(),"
+							+ "num_ratings = x.getNumRatings(), creator = x.getCreator(), last_id = Item.getLastUsedId(), type = (x instanceof Album) ? 'Album' : ((x instanceof Film) ? 'Film' : 'Audiobook')"
+						+ "where id =x.getId()");
+				}
 			Results.close();
 			SqlStatement.close();
 			SqlConnection.close();
@@ -189,12 +207,30 @@ public class DataLoader {
 		return null;
 	}
 
-	public static ArrayList<Item> searchForItemArtist(Class type, String artist) {
-		// TODO: Search with artist name.
+	public static Item searchForItemArtist(String artist) {
+		HashMap<Integer, Item> set = DataLoader.itemSet;
+				Set<Integer> iterableSet = set.keySet();
+				Iterator<Integer> i = iterableSet.iterator();
+				while (i.hasNext()) {
+					Item x = set.get(i.next());
+					if(x.getCreator() == artist)
+					{
+						return x;
+					}
+				}
 		return null;
 	}
-	public static ArrayList<Item> searchForItemTitle(Class type, String title) {
-		// TODO: Search with item name.
+	public static Item searchForItemTitle(String title) {
+		HashMap<Integer, Item> set = DataLoader.itemSet;
+				Set<Integer> iterableSet = set.keySet();
+				Iterator<Integer> i = iterableSet.iterator();
+				while (i.hasNext()) {
+					Item x = set.get(i.next());
+					if(x.getName() == title)
+					{
+						return x;
+					}
+				}
 		return null;
 	}
 	
@@ -218,11 +254,16 @@ public class DataLoader {
 	}
 
 	public static boolean removeUserFromList(User user) {
-		// TODO: Remove user from database.
+		try{
 		String s = user.getUsername().toLowerCase();
 		if (users.containsKey(s)) {
+			SqlStatement.executeQuery("delete from users where username = s");
 			users.remove(s);
 			return true;
+		}
+		} catch(Exception e) {
+			System.out.println("Problem deleting user: " + e.getClass().getSimpleName() + ": " + e.getMessage());
+			e.printStackTrace();
 		}
 		return false;
 	}
