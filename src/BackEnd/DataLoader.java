@@ -144,6 +144,8 @@ public class DataLoader {
 				System.out.println("Loading user: " + Results.getString("username") + ", Password: " + Results.getString("password"));
 				users.put(Results.getString("username"), x);
 			}
+			
+			// TODO: Load items
 		}
 		catch(SQLException e) {
 			System.out.println("Problem with SQL.");
@@ -163,6 +165,7 @@ public class DataLoader {
 			System.out.println("Saving...");
 			Set<String> iterableSet = users.keySet();
 			Iterator<String> i = iterableSet.iterator();
+			// TODO: Fix SQL Queries
 			while (i.hasNext()) {
 				User x = users.get(i.next());
 				SqlStatement.executeQuery("update users set username = x.getUsername() , password = x.getPassword(), billing_name = x.getName(), address = x.getAddress(), "
@@ -179,6 +182,7 @@ public class DataLoader {
 							+ "num_ratings = x.getNumRatings(), creator = x.getCreator(), last_id = Item.getLastUsedId(), type = (x instanceof Album) ? 'Album' : ((x instanceof Film) ? 'Film' : 'Audiobook')"
 						+ "where id =x.getId()");
 				}
+				// TODO: Save items
 			Results.close();
 			SqlStatement.close();
 			SqlConnection.close();
@@ -257,7 +261,8 @@ public class DataLoader {
 		try{
 		String s = user.getUsername().toLowerCase();
 		if (users.containsKey(s)) {
-			SqlStatement.executeQuery("delete from users where username = s");
+			// TODO: Test this.
+			SqlStatement.execute("delete from users where username = " + s);
 			users.remove(s);
 			return true;
 		}
@@ -274,7 +279,7 @@ public class DataLoader {
 		while (i.hasNext()) {
 			Item a = itemSet.get(i.next());
 			if (a != null) {
-			sales += a.getPrice() * a.getNumSold();
+				sales += a.getPrice() * a.getNumSold();
 			}
 		}
 		return sales;
