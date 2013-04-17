@@ -6,6 +6,10 @@ import Gui.*;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
+/**
+ * This class is the LoginEvents class that is used to set up all the login gui components.
+ */
+
 public class LoginEvents implements Gui.EventImplementation {
 
 	public GuiObject MainFrame;
@@ -15,6 +19,9 @@ public class LoginEvents implements Gui.EventImplementation {
 	private Frame LoginPanel;
 	private Frame Help;
 
+        /**
+        * MakeElements is the method used to set up the gui objects(Frames, TextButtons, Textlabels)
+        */        
 	public final void MakeElements() {
 		MainFrame = new Frame("MainLogin", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(Driver.ColorScheme, 1), null);
 		Frame leftPanel = new Frame("LeftPanel", new DPair(0, 0, 0, 0), new DPair(0, 150, 1, 0), Color.WHITE, MainFrame);
@@ -44,11 +51,15 @@ public class LoginEvents implements Gui.EventImplementation {
 		new TextButton("CloseHelpWindow", new DPair(.7, -4, 1, -26), new DPair(.3, 0, 0, 20), Driver.ColorScheme, Help, "Close", 14);
 
 	}
-
+        /**
+        * LoginEvents is the default constructor
+        */
 	public LoginEvents() {
 		MakeElements();
 	}
-
+        /**
+        * mouse event handling methods
+        */
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
 		switch (button.GetName()) {
