@@ -6,6 +6,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
+/**
+ * This class is the LibraryEvents class that is used to set up all the library gui components.
+ */
+
 public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents {
 
 	public GuiObject MainFrame;
@@ -21,7 +25,10 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	private Frame RatingWindow;
 	public Item CurrentPlayingItem = null;
 	private int CurrentRatingId;
-
+        
+        /**
+        * MakeElements is the method used to set up the gui objects(Frames, TextButtons, Textlabels)
+        */
 	public final void MakeElements() {
 		Color ColorScheme = Driver.ColorScheme;
 		MainFrame = new Frame("Library", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(ColorScheme, 1), null);
@@ -93,7 +100,14 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	}
 
 	private int CurrentModifyWindowId = 0;
+        
+        /**
+        * SetModify is the method used to set up the text boxes for the library section
+        * @param itemIndex is id number of item
+        */        
 	private void SetModify(int itemIndex) {
+        //PRE:  itemIndex > 0 
+        //POST: set text for the each parts
 		Item current = DataLoader.getItemById(itemIndex);
 		if (current != null) {
 			CurrentModifyWindowId = itemIndex;
@@ -122,7 +136,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 
 	private final int LIST_ELEMENT_HEIGHT = 55;
 	private final int LIST_ELEMENT_SPACING = 5;
-	
+        /**
+        * AddListElement is the method used to add gui components in the list
+        */	
 	private void AddListElement() {
 		// ScrollList should never exceed the number of elements in the current list.
 		Frame newFrame = new Frame("ScrollList" + ScrollList.size(), new DPair(0, 0, 0, 0), new DPair(1, 0, 0, LIST_ELEMENT_HEIGHT), Driver.ColorScheme, CenterScrollFrame);
@@ -133,7 +149,12 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		new TextButton("Action2", new DPair(1, -94, 0, 3), new DPair(0, 44, 1, -6), Driver.ColorScheme, newFrame, "Edit", 14).SetVisible(false);
 		ScrollList.add(newFrame);
 	}
-
+        /**
+        * SetListText is the method used to set the text for each items
+        * @param rowOne is the first low of displaying
+        * @param rowTwo is the second low of desplaying
+        * @param currentItem is the type of current item
+        */
 	private void SetListText(TextLabel rowOne, TextLabel rowTwo, Item currentItem) {
 		if (currentItem instanceof Album) {
 			rowOne.SetText(String.format("Artist: %s; Album: %s", currentItem.getCreator(), currentItem.getName()));
@@ -146,7 +167,10 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 			rowTwo.SetText(String.format("Genre: %s; Year: %d; Rating: %.2f; Cost: %.2f", currentItem.getGenre(), currentItem.getYearOfRelease(), currentItem.getRating(), currentItem.getPrice()));
 		}
 	}
-	
+        /**
+        * GetItemIdOfFrame is the method used to get the item id of the frame
+        * @param frame is list of the index
+        */	
 	private int GetItemIdOfFrame(Frame frame) {
 		PixelOffset = (int) LibScroll.GetValue();
 		ViewIndex = (int) Math.floor((double) PixelOffset / (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING));
@@ -161,7 +185,10 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 
 	private ArrayList ActiveList = new ArrayList();
 	private int LastCurrentListValue = 0;
-	private void SetFrames() {
+        /**
+        * SetFrames is the method used to get the item id of the frame
+        */
+        private void SetFrames() {
 		AccountCredit.SetText(String.format("Credit: $%.2f", Driver.CurrentUser.getCredit()));
 		Frame current;
 		TextLabel rowOne;
@@ -270,7 +297,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 			}
 		}
 	}
-
+        /**
+        * LibraryEvents is the method used to get the item id of the frame
+        */
 	public LibraryEvents() {
 		int WindowHeight = Driver.GetGuiMain().GetWindow().getSize().height;
 		MakeElements();
@@ -280,7 +309,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 			AddListElement();
 		}
 	}
-
+        /**
+        * ButtonClicked is the method used to set the button event handling
+        */
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
 		switch (button.GetName()) {
@@ -436,7 +467,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		}
 		SetFrames();
 	}
-
+        /**
+        * onWindowShown is the method used to set up the window handling event
+        */
 	@Override public void onWindowShown() {
 		if (!Driver.CurrentUser.getAdministrator()) {
 			ManagementButton.SetParent(null);
@@ -457,17 +490,15 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	@Override public void onWindowResize() {
 		SetFrames();
 	}
-	
+        /**
+        * Mouse event handling methods
+        */	
 	@Override
-	public void MouseDown(GuiObject button, int x, int y) {
-	}
+	public void MouseDown(GuiObject button, int x, int y) { }
 
 	@Override
-	public void MouseUp(GuiObject button, int x, int y) {
-	}
+	public void MouseUp(GuiObject button, int x, int y) { }
 
 	@Override
-	public void MouseMove(GuiObject button, int x, int y) {
-		SetFrames();
-	}
+	public void MouseMove(GuiObject button, int x, int y) {SetFrames();}
 }
