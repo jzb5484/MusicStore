@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -160,29 +161,103 @@ public class DataLoader {
 
 	}
 
-	public static void saveToFile() {
+public static void saveToFile() {
 		try {
 			System.out.println("Saving...");
 			Set<String> iterableSet = users.keySet();
 			Iterator<String> i = iterableSet.iterator();
-			// TODO: Fix SQL Queries
 			while (i.hasNext()) {
 				User x = users.get(i.next());
-				SqlStatement.executeQuery("update users set username = x.getUsername() , password = x.getPassword(), billing_name = x.getName(), address = x.getAddress(), "
-						+ "credit = x.getCredit(), administrator = x.getAdministrator(), purchase_history = x.getPurchaseHistory, ratings = x.getRatings() "
-						+ "where username =x.getUsername()");
+				PreparedStatement preparedStatement = null;
+				String strQuery = "update users set username = ? , password = ?, billing_name = ?, address = ?,credit = ?, administrator = ?, purchase_history = ?, ratings = ? "
+						+ "where username =?";
+				preparedStatement = SqlConnection.prepareStatement(strQuery);
+				preparedStatement.setString(1,x.getUsername());
+				preparedStatement.setString(2,x.getPassword());
+				preparedStatement.setString(3,x.getName());
+				preparedStatement.setString(4,x.getAddress());
+				preparedStatement.setDouble(5,x.getCredit());
+				preparedStatement.setBoolean(6,x.getAdministrator());
+				//preparedStatement.setArray(7,x.getPurchaseHistory());
+			//	preparedStatement.setString(8,x.getRatings());
+				preparedStatement.setString(7,"");
+				preparedStatement.setString(8,"");
+				preparedStatement.setString(9,x.getUsername());
+				if(preparedStatement.executeUpdate()==0)
+				{
+					preparedStatement = null;
+				strQuery = "insert into users (username, password, billing_name, address, credit, administrator, purchase_history, ratings) values (?,?,?,?,?,?,?,?)";
+				preparedStatement = SqlConnection.prepareStatement(strQuery);
+				preparedStatement.setString(1,x.getUsername());
+				preparedStatement.setString(2,x.getPassword());
+				preparedStatement.setString(3,x.getName());
+				preparedStatement.setString(4,x.getAddress());
+				preparedStatement.setDouble(5,x.getCredit());
+				preparedStatement.setBoolean(6,x.getAdministrator());
+				//preparedStatement.setArray(7,x.getPurchaseHistory());
+			//	preparedStatement.setString(8,x.getRatings());
+				preparedStatement.setString(7,"");
+				preparedStatement.setString(8,"");
+				preparedStatement.executeUpdate();
+				}
+				else
+				{
+					preparedStatement.executeUpdate();
+				}
+				
 				}
 				HashMap<Integer, Item> set = DataLoader.itemSet;
 				Set<Integer> iterableSetItem = set.keySet();
 				Iterator<Integer> iItem = iterableSetItem.iterator();
 				while (iItem.hasNext()) {
 					Item xItem = set.get(iItem.next());
-					SqlStatement.executeQuery("update items set name = x.getName() , id = x.getId(), year_of_release =  x.getYearOfRelease(), duration = x.getTotalDuration(), "
-						+ "genre = x.getGenre(), preview = x.getPreview(), num_sold = x.getNumSold(), price = x.getPrice(), is_visible = x.isVisible(), cumulative_rating = x.getCumulativeRating(),"
-							+ "num_ratings = x.getNumRatings(), creator = x.getCreator(), last_id = Item.getLastUsedId(), type = (x instanceof Album) ? 'Album' : ((x instanceof Film) ? 'Film' : 'Audiobook')"
-						+ "where id =x.getId()");
+					PreparedStatement preparedStatement = null;
+				String strQuery = "update items set item_name = ?, id = ?, year_of_release =  ?, duration = ?, "
+						+ "genre = ?, preview = ?, number_sold = ?, price = ?, hidden = ?, cumulative_ratings = ?,"
+						+ " num_ratings = ?, creator = ?, item_type = ? where id =?";
+				preparedStatement = SqlConnection.prepareStatement(strQuery);
+				preparedStatement.setString(1,xItem.getName());
+				preparedStatement.setInt(2,xItem.getId());
+				preparedStatement.setInt(3,xItem.getYearOfRelease());
+				preparedStatement.setInt(4,xItem.getTotalDuration());
+				preparedStatement.setString(5,xItem.getGenre());
+				preparedStatement.setString(6,xItem.getPreview());
+				preparedStatement.setInt(7,xItem.getNumSold());
+				preparedStatement.setDouble(8,xItem.getPrice());
+				preparedStatement.setBoolean(9,xItem.isVisible());
+				preparedStatement.setInt(10,xItem.getCumulativeRating());
+				preparedStatement.setInt(11,xItem.getNumRatings());
+				preparedStatement.setString(12,xItem.getCreator());
+				//preparedStatement.setString(13,(xItem instanceof Album) ? 'Album' : ((xItem instanceof Film) ? 'Film' : 'Audiobook'));
+				preparedStatement.setString(13,"");
+				preparedStatement.setInt(14,xItem.getId());
+				if(preparedStatement.executeUpdate()==0)
+				{
+					preparedStatement = null;
+				strQuery = "insert into items (item_name, id, year_of_release, duration, genre, preview, number_sold, price, hidden, cumulative_ratings, "
+						+ "num_ratings, creator, item_type) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				preparedStatement = SqlConnection.prepareStatement(strQuery);
+				preparedStatement.setString(1,xItem.getName());
+				preparedStatement.setInt(2,xItem.getId());
+				preparedStatement.setInt(3,xItem.getYearOfRelease());
+				preparedStatement.setInt(4,xItem.getTotalDuration());
+				preparedStatement.setString(5,xItem.getGenre());
+				preparedStatement.setString(6,xItem.getPreview());
+				preparedStatement.setInt(7,xItem.getNumSold());
+				preparedStatement.setDouble(8,xItem.getPrice());
+				preparedStatement.setBoolean(9,xItem.isVisible());
+				preparedStatement.setInt(10,xItem.getCumulativeRating());
+				preparedStatement.setInt(11,xItem.getNumRatings());
+				preparedStatement.setString(12,xItem.getCreator());
+				//preparedStatement.setString(13,(xItem instanceof Album) ? 'Album' : ((xItem instanceof Film) ? 'Film' : 'Audiobook'));
+				preparedStatement.setString(13,"");
+				preparedStatement.executeUpdate();
 				}
-				// TODO: Save items
+				else
+				{
+					preparedStatement.executeUpdate();
+				}
+				}
 			Results.close();
 			SqlStatement.close();
 			SqlConnection.close();
