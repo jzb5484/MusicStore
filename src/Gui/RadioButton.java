@@ -5,35 +5,54 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Iterator;
 
-/** Check box gui object.
- *
+/**
+ * This class is the RadioButton class that is used to set up the radiobuttons
  * @author Jackson Burlew
  */
 
 public class RadioButton extends GuiObject {
 	
-	private String Text;
-	private Font TextFont;
-	private Color TextColor;
-	private Color HighlightColor1;
+	private String Text;                // text for the buttons
+	private Font TextFont;              // text font
+	private Color TextColor;            // text color
+	private Color HighlightColor1;      // highlight colors
 	private Color HighlightColor2;
 	private Color HighlightColor3;
 	private boolean Selected;
 	
 	private boolean Hovering = false;
 
-	
+        /**
+        * SetText is the method used to set the text
+        */	
 	public void SetText(String text) {Text = (text == null ? "" : text);}
-	public void SetFontSize(int size) {TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, size)));}
-	public void SetFont(Font f) {TextFont = f;}
-	public void SetTextColor(Color c) {TextColor = c;}
-	public void SetBackgroundColor(Color c) {
+        /**
+        * SetFontSize is the method used to set the font size
+        */
+        public void SetFontSize(int size) {TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, size)));}
+        /**
+        * SetFont is the method used to set the font
+        */
+        public void SetFont(Font f) {TextFont = f;}
+        /**
+        * SetTextColor is the method used to set the text color
+        */
+        public void SetTextColor(Color c) {TextColor = c;}
+        /**
+        * SetBackgroundColor is the method used to set the color of background
+        */
+        public void SetBackgroundColor(Color c) {
+        //PRE:
+        //POST: set the highlighted background color            
 		GuiColor = c;
 		HighlightColor1 = ColorExtension.Lighten(c, .15);
 		HighlightColor2 = ColorExtension.Lighten(c, .3);
 		HighlightColor3 = ColorExtension.Lighten(c, .45);
 	}
-	public void SetSelected(boolean selected) {
+        /**
+        * SetSelected is the method used to set the value for selected
+        */
+        public void SetSelected(boolean selected) {
 		if (selected) {
 			// Deselect all other radio buttons with the same parent, then set selected.
 			Iterator<GuiObject> i = this.GetParent().GetChildren();
@@ -55,27 +74,60 @@ public class RadioButton extends GuiObject {
 			Selected = true;
 		}
 	}
+        /**
+        * GetText is the method used to get the text 
+        */        
 	public String GetText() {return Text;}
-	public Font GetFont() {return TextFont;}
+        /**
+        * GetFont is the method used to get the font 
+        */
+        public Font GetFont() {return TextFont;}
+        /**
+        * GetTextColor is the method used to get the text color 
+        */        
 	public Color GetTextColor() {return TextColor;}
-	public boolean GetSelected() {return Selected;}
-
+        /**
+        * GetSelected is the method used to get the statues of selected
+        */
+        public boolean GetSelected() {return Selected;}
+        /**
+        * SetHovering is the method used to get the value of Hovering 
+        */
 	public void SetHovering(boolean value) {
 		Hovering = value;
 	}
-	
+        /**
+        * RadioButton is the initial constructor
+        * @param ItemName is the name of item
+        * @param Position is the position
+        * @param Size is the size
+        * @param GuiColor is the color
+        * @param Parent is parent object
+        * @param text is text 
+        * @param textSize is the size of text
+        */	
 	public RadioButton(String ItemName, DPair Position, DPair Size, Color GuiColor, GuiObject Parent, String text, int textSize) {
-		super(ItemName, Position, Size, GuiColor, Parent);
+        //PRE:
+        //POST: setting the initial values for ItemName, Position, Size, GuiColor, Parent, text, textSize
+                super(ItemName, Position, Size, GuiColor, Parent);
 		Text = (text == null ? "TextButton" : text);
 		TextFont = new Font(GuiObject.DEFAULT_FONT, GuiObject.DEFAULT_STYLE, Math.min(72, Math.max(6, textSize)));
 		TextColor = Color.WHITE;
 		SetSelected(false);
 		SetBackgroundColor(GuiColor);
 	}
-
+        /**
+        * draw is the method that draw checkbox
+        * @param parentX is initial x coordinate
+        * @param parentY is initial y coordinate
+        * @param parentWidth is the width
+        * @param parentHeight is the height
+        */
 	@Override
 	public void draw(Graphics g, int parentX, int parentY, int parentWidth, int parentHeight) {
-		if (g != null && this != null) {
+        //PRE:
+        //POST: setting the parentX, parentY, parentWidth, parentHeight of the Gui
+            if (g != null && this != null) {
 			AbsolutePositionX = parentX + this.Position.xOffset + (int) (this.Position.xScale * parentWidth);
 			AbsolutePositionY = parentY + this.Position.yOffset + (int) (this.Position.yScale * parentHeight);
 			AbsoluteSizeX = this.Size.xOffset + (int) (this.Size.xScale * parentWidth);
