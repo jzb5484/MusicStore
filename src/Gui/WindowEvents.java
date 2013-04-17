@@ -5,7 +5,7 @@
 package Gui;
 
 /**
- *
+ * This interface is the WindowEvents that is used to set the window event handling
  * @author Jackson Burlew
  */
 public interface WindowEvents {
