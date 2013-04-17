@@ -13,14 +13,16 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * This class is the ManagementEvents class that is used to set up all the management event related gui components.
  * @author Jonathan Maderic
  */
 public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEvents {
-
+        
 	public GuiObject MainFrame;
-	private Color ColorScheme = Driver.ColorScheme;
-	private int numberOfItems = 0;
+	// initialize the color
+        private Color ColorScheme = Driver.ColorScheme;
+	// initialize the number of items
+        private int numberOfItems = 0;
 	private double numberOfItemsDob = 0.0;
 	private int numberOfItemPages = 0;
 	private int numberOfItemsRemain = 0;
@@ -28,22 +30,27 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 	private final int NUMBER_ITEMS_PER_PAGE = 2;
 	private int nextRow = 20;
 	private final int ROW_SPACING = 50;
-	private Frame leftPanel;
+	// initialize the Frame
+        private Frame leftPanel;
 	private int pageNum = 0;
 	private Frame ItemStatsPanel;
 	private Item currentItem;
 	private Frame UserStatsPanel;
 	private String caller;
-	private TextButton back;
+	// initialize the text buttons
+        private TextButton back;
 	private TextButton next;
 	private TextButton editOne;
 	private TextButton editTwo;
-	private Item itemOne;
+	// initialize the items
+        private Item itemOne;
 	private Item itemTwo;
 	private Frame Edit;
-	private TextButton backToItemStat;
+	// initialize the text buttons
+        private TextButton backToItemStat;
 	private TextButton saveItem;
-	private TextBox name;
+	// initialize the text boxes
+        private TextBox name;
 	private TextBox release;
 	private TextBox durationH;
 	private TextBox durationM;
@@ -54,6 +61,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 	private CheckBox hidden;
 	private TextBox creator;
 	private int editId;
+        // initialize the Radiobuttons
 	private RadioButton albumRadio;
 	private RadioButton audioBookRadio;
 	private RadioButton FilmRadio;
@@ -64,7 +72,10 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 	private User currentUser;
 	private User userOne;
 	private User userTwo;
-
+        
+        /**
+        * MakeElements is the method used to set up the gui objects(Frames, TextButtons, Textlabels)
+        */
 	public final void MakeElements() {
 
 		MainFrame = new Frame("MangementTools", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(ColorScheme, 1), null);
@@ -79,11 +90,15 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		new TextLabel("Total sales", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Sales: $" + DataLoader.getSales(), 14);
 
 	}
-
+        /**
+        * ManagementEvents is the default constructor.
+        */
 	public ManagementEvents() {
 		MakeElements();
 	}
-
+        /**
+        * GenerateItemStat is the method used to set the pages of window and statues of items
+        */
 	private void GenerateItemStat() {
 		if (ItemStatsPanel != null) {
 			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
@@ -139,7 +154,9 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		}
 		Driver.GetGuiMain().GetTextBoxes();
 	}
-
+        /**
+        * GenerateUserStat is the method used to set the pages of window and statues of items
+        */
 	private void GenerateUserStat() {
 		if (UserStatsPanel != null) {
 			UserStatsPanel.GetParent().RemoveChild(UserStatsPanel);
@@ -195,7 +212,9 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		}
 		Driver.GetGuiMain().GetTextBoxes();
 	}
-
+        /**
+        * ButtonClicked is the method used to work when the each button is clicked
+        */
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
 		switch (button.GetName()) {
@@ -406,7 +425,10 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 				break;
 		}
 	}
-
+        /**
+        * ItemEditor is the method used to edit the existed item
+        * @param editItem is the item that has been edited
+        */
 	private void ItemEditor(Item editItem) {
 		if (back != null) {
 			back.GetParent().RemoveChild(back);
@@ -463,7 +485,9 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 				new DPair(0, 130, 0, 40), ColorScheme, Edit, "Save", 16);
 		Driver.GetGuiMain().GetTextBoxes();
 	}
-
+        /**
+        * ItemNew is the method used to add the new item
+        */
 	private void ItemNew() {
 		if (back != null) {
 			back.GetParent().RemoveChild(back);
@@ -501,19 +525,21 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		saveItem = new TextButton("SaveItemNew", new DPair(0, 340, 0, 270), new DPair(0, 100, 0, 30), ColorScheme, Edit, "Save", 14);
 		Driver.GetGuiMain().GetTextBoxes();
 	}
-
+        /**
+        * Mouse event handling methods
+        */
 	@Override
 	public void MouseDown(GuiObject button, int x, int y) {
 	}
-
 	@Override
 	public void MouseUp(GuiObject button, int x, int y) {
 	}
-
 	@Override
 	public void MouseMove(GuiObject button, int x, int y) {
 	}
-	
+        /**
+        * onWindowShown is the method used to set up the window handling event
+        */	
 	@Override
 	public void onWindowShown() {
 		ButtonClicked(leftPanel.GetChild("Accounts"), 0, 0);
