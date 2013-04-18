@@ -308,8 +308,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				}
 				break;
 			case "Action":
+				System.out.println("Buy or Play button Pressed.");
 				// "Buy" or "Play" button pressed.
-				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Buy") && CurrentList >= 1 && CurrentList <= 3) {
+				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Buy") && CurrentList >= 1 && CurrentList <= 4) {
 					int id = GetItemIdOfFrame((Frame) button.GetParent());
 					System.out.println("Pressed buy for item: " + id);
 					boolean success = Driver.CurrentUser.purchaseItem(id);
@@ -435,6 +436,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				break;
 		}
 		SetFrames();
+		Driver.GetGuiMain().GetTextBoxes();
 	}
 
 	@Override public void onWindowShown() {
