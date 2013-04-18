@@ -97,7 +97,6 @@ public class RegisterEvents implements Gui.EventImplementation {
                 } else {
                     newUser = new User(username.GetText(), password.GetText(), name.GetText(), address.GetText(), Double.parseDouble(credit.GetText()), false);
                     if (DataLoader.addUserToList(newUser)) {
-                        DataLoader.saveToFile();
                         Driver.SetFrame("Login");
                     } else {
                         JOptionPane.showMessageDialog(null, "This user already exists - Please enter a new user", "User Exists", JOptionPane.WARNING_MESSAGE);
