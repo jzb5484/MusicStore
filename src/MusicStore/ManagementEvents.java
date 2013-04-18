@@ -165,7 +165,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 						editTwo.GetParent().RemoveChild(editTwo);
 					}
 					userTwo = currentUser;
-					editTwo = new TextButton("delete1", new DPair(1, -110, .05, 0), new DPair(0, 100, .9, 0), ColorScheme, newTextLabel, "Delete", 14);
+					editTwo = new TextButton("delete2", new DPair(1, -110, .05, 0), new DPair(0, 100, .9, 0), ColorScheme, newTextLabel, "Delete", 14);
 					break;
 			}
 			nextRow = nextRow + ROW_SPACING;
