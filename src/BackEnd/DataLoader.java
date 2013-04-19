@@ -198,8 +198,11 @@ public class DataLoader {
 			}
 		} catch (SQLException e) {
 			System.out.println("Problem with SQL.");
-			System.out.println("\tSQLException: " + e.getMessage());
-			e.printStackTrace();
+//			System.out.println("\tSQLException: " + e.getMessage());
+			System.out.println("Database server not found. Make sure the Java DB Server in the Services tab has been started.");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Problem with SQL.");
+			System.out.println("Classes not found for reading SQL with derby. Ensure that derby.jar and derbyclient.jar are referenced in the project properties.");
 		} catch (Exception e) {
 			System.out.println("Unforeseen Exception.");
 			System.out.println("\t" + e.getClass().getSimpleName() + ": " + e.getMessage());
@@ -319,8 +322,8 @@ public class DataLoader {
 			SqlStatement.close();
 			SqlConnection.close();
 		} catch (Exception e) {
-			System.out.println("Problem Closing SQL Database: " + e.getClass().getSimpleName() + ": " + e.getMessage());
-			e.printStackTrace();
+//			System.out.println("Problem Closing SQL Database: " + e.getClass().getSimpleName() + ": " + e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
