@@ -4,16 +4,19 @@
  */
 package MusicStore;
 
+
 import BackEnd.*;
 import Gui.*;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
+
 /**
- *
+ * This class is the RegisterEvents class that is used to set up all the register gui components.
  * @author Jonathan Maderic
  */
 public class RegisterEvents implements Gui.EventImplementation {
+
 
     public GuiObject MainFrame;
     private User newUser;
@@ -23,6 +26,9 @@ public class RegisterEvents implements Gui.EventImplementation {
     private TextBox address;
     private TextBox credit;
 
+    /**
+    * MakeElements is the method used to set up the gui objects(Frames, TextButtons, Textlabels)
+    */
     public final void MakeElements() {
         Color ColorScheme = Driver.ColorScheme;
         MainFrame = new Frame("Register", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(ColorScheme, 1), null);
@@ -43,10 +49,16 @@ public class RegisterEvents implements Gui.EventImplementation {
         new TextButton("Enter", new DPair(0, 550, 0, 400), new DPair(.07, 0, .05, 0), Driver.ColorScheme, LoginPanel, "Enter", 16);
     }
 
+    /**
+    * RegisterEvents is the default constructor
+    */
     public RegisterEvents() {
         MakeElements();
     }
 
+    /**
+    * mouse event handling methods
+    */
     @Override
     public void ButtonClicked(GuiObject button, int x, int y) {
         switch (button.GetName()) {
@@ -113,13 +125,16 @@ public class RegisterEvents implements Gui.EventImplementation {
         }
     }
 
+
     @Override
     public void MouseDown(GuiObject button, int x, int y) {
     }
 
+
     @Override
     public void MouseUp(GuiObject button, int x, int y) {
     }
+
 
     @Override
     public void MouseMove(GuiObject button, int x, int y) {

@@ -97,7 +97,7 @@ public class DataLoader {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
 
 			//Connect to the database.
-			SqlConnection = DriverManager.getConnection("jdbc:derby://localhost:1527/mediastoredb;create=true", "root", "root");
+			SqlConnection = DriverManager.getConnection("jdbc:derby://localhost:1527/group2mediastoredb;create=true", "root", "root");
 
 			//Create statement object to communicate.
 			SqlStatement = SqlConnection.createStatement();

@@ -4,22 +4,26 @@
  */
 package MusicStore;
 
+
 import BackEnd.*;
 import Gui.*;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 import javax.swing.JOptionPane;
 
+
 /**
- *
+ * This class is the ManagementEvents class that is used to set up all the management event related gui components.
  * @author Jonathan Maderic
  */
 public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEvents {
 
+
 	public GuiObject MainFrame;
+        // initialize the color
 	private Color ColorScheme = Driver.ColorScheme;
+        // initialize the number of items
 	private int numberOfItems = 0;
 	private double numberOfItemsDob = 0.0;
 	private int numberOfItemPages = 0;
@@ -28,21 +32,26 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 	private final int NUMBER_ITEMS_PER_PAGE = 2;
 	private int nextRow = 20;
 	private final int ROW_SPACING = 50;
+        // initialize the Frame
 	private Frame leftPanel;
 	private int pageNum = 0;
 	private Frame ItemStatsPanel;
 	private Item currentItem;
 	private Frame UserStatsPanel;
 	private String caller;
+        // initialize the text buttons
 	private TextButton back;
 	private TextButton next;
 	private TextButton editOne;
 	private TextButton editTwo;
+        // initialize the items
 	private Item itemOne;
 	private Item itemTwo;
 	private Frame Edit;
+	// initialize the text buttons        
 	private TextButton backToItemStat;
 	private TextButton saveItem;
+	// initialize the text boxes        
 	private TextBox name;
 	private TextBox release;
 	private TextBox durationH;
@@ -54,6 +63,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 	private CheckBox hidden;
 	private TextBox creator;
 	private int editId;
+        // initialize the Radiobuttons        
 	private RadioButton albumRadio;
 	private RadioButton audioBookRadio;
 	private RadioButton FilmRadio;
@@ -65,7 +75,11 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 	private User userOne;
 	private User userTwo;
 
+        /**
+        * MakeElements is the method used to set up the gui objects(Frames, TextButtons, Textlabels)
+        */
 	public final void MakeElements() {
+
 
 		MainFrame = new Frame("MangementTools", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(ColorScheme, 1), null);
 		leftPanel = new Frame("LeftPanel", new DPair(0, 0, 0, 0), new DPair(0, 150, 1, 0), Color.WHITE, MainFrame);
@@ -78,12 +92,19 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		new TextButton("BackToLibaray", new DPair(0, 0, 0, 222), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Back To Library", 14);
 		new TextLabel("Total sales", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Sales: $" + DataLoader.getSales(), 14);
 
+
 	}
 
+        /**
+        * ManagementEvents is the default constructor.
+        */
 	public ManagementEvents() {
 		MakeElements();
 	}
 
+        /**
+        * GenerateItemStat is the method used to set the pages of window and statues of items.
+        */
 	private void GenerateItemStat() {
 		if (ItemStatsPanel != null) {
 			ItemStatsPanel.GetParent().RemoveChild(ItemStatsPanel);
@@ -111,6 +132,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					editTwo = new TextButton("edit2", new DPair(1, -110, .05, 0), new DPair(0, 100, .9, 0), ColorScheme, newTextLabel, "Edit", 14);
 					break;
 
+
 			}
 			nextRow = nextRow + ROW_SPACING;
 			new TextLabel("Items", new DPair(0, 40, 0, nextRow), new DPair(1, -50, 0, ROW_SPACING - 5), ColorScheme, ItemStatsPanel,
@@ -123,6 +145,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 			numberOfItemsOnPage++;
 			numberOfItemsRemain--;
 		}
+                // created back button
 		if (pageNum != 1) {
 			if (back != null) {
 				back.GetParent().RemoveChild(back);
@@ -130,6 +153,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 			back = new TextButton("Back", new DPair(0, 40, 0, Driver.GetGuiMain().GetWindow().getSize().height - 150), new DPair(0.15, 0, 0.09, 0), ColorScheme, ItemStatsPanel, "Back", 14);
 			caller = "GenerateItemStat";
 		}
+                // created next button
 		if (pageNum != numberOfItemPages) {
 			if (next != null) {
 				next.GetParent().RemoveChild(next);
@@ -140,6 +164,9 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 
+        /**
+        * GenerateUserStat is the method used to set the pages of window and statues of user.
+        */
 	private void GenerateUserStat() {
 		if (UserStatsPanel != null) {
 			UserStatsPanel.GetParent().RemoveChild(UserStatsPanel);
@@ -179,6 +206,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 			numberOfItemsOnPage++;
 			numberOfItemsRemain--;
 		}
+                // create back button
 		if (pageNum != 1) {
 			if (back != null) {
 				back.GetParent().RemoveChild(back);
@@ -186,6 +214,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 			back = new TextButton("Back", new DPair(0, 40, 0, Driver.GetGuiMain().GetWindow().getSize().height - 150), new DPair(0.15, 0, 0.09, 0), ColorScheme, UserStatsPanel, "Back", 14);
 			caller = "GenerateUserStat";
 		}
+                // create next button
 		if (pageNum != numberOfItemPages) {
 			if (next != null) {
 				next.GetParent().RemoveChild(next);
@@ -196,10 +225,13 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 
+        /**
+        * ButtonClicked is the method used to work when the each button is clicked.
+        */
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
 		switch (button.GetName()) {
-			case "ItemStats":
+			case "ItemStats":       // diplay the item stats
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
@@ -225,8 +257,9 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					JOptionPane.showMessageDialog(null, "Error - no items found");
 				}
 
+
 				break;
-			case "Accounts":
+			case "Accounts":        //  display the user account
 				if (Edit != null) {
 					Edit.SetParent(null);
 				}
@@ -253,13 +286,13 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					}
 				}
 				break;
-			case "AddItems":
+			case "AddItems":        // add items
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
 				ItemNew();
 				break;
-			case "BackToLibaray":
+			case "BackToLibaray":       // back to the library window
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
@@ -268,7 +301,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 				}
 				Driver.SetFrame("Library");
 				break;
-			case "Next":
+			case "Next":            // move to the next page
 				pageNum++;
 				numberOfItemsOnPage = 0;
 				nextRow = 20;
@@ -278,7 +311,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					GenerateUserStat();
 				}
 				break;
-			case "Back":
+			case "Back":            // move back to the previous page
 				System.out.println(numberOfItemsOnPage);
 				numberOfItemsRemain = numberOfItemsRemain + (numberOfItemsOnPage * 2);
 				numberOfItemsOnPage = 0;
@@ -304,19 +337,19 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					GenerateUserStat();
 				}
 				break;
-			case "edit1":
+			case "edit1":       // edit item1
 				ItemEditor(itemOne);
 				break;
-			case "edit2":
+			case "edit2":       // edit item2
 				ItemEditor(itemTwo);
 				break;
-			case "delete1":
+			case "delete1":     // delete user1
 				DataLoader.removeUserFromList(userOne);
 				break;
-			case "delete2":
+			case "delete2":     // delete user2
 				DataLoader.removeUserFromList(userTwo);
 				break;
-			case "BackToItemStat":
+			case "BackToItemStat":      // back to item stat panel
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
@@ -340,7 +373,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					GenerateItemStat();
 				}
 				break;
-			case "SaveItems":
+			case "SaveItems":       // saving edited items
 				if (Edit != null) {
 					Edit.GetParent().RemoveChild(Edit);
 				}
@@ -371,7 +404,7 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 					GenerateItemStat();
 				}
 				break;
-			case "SaveItemNew":
+			case "SaveItemNew":     // saving new item
 				if (Edit != null) {
 					Edit.SetParent(null);
 				}
@@ -407,6 +440,10 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		}
 	}
 
+        /**
+        * ItemEditor is the method used to edit the existed item
+        * @param editItem is the item that has been edited
+        */
 	private void ItemEditor(Item editItem) {
 		if (back != null) {
 			back.GetParent().RemoveChild(back);
@@ -464,6 +501,9 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 
+        /**
+        * ItemNew is the method used to add the new item.
+        */
 	private void ItemNew() {
 		if (back != null) {
 			back.GetParent().RemoveChild(back);
@@ -502,18 +542,26 @@ public class ManagementEvents implements Gui.EventImplementation, Gui.WindowEven
 		Driver.GetGuiMain().GetTextBoxes();
 	}
 
+        /**
+        * Mouse event handling methods
+        */
 	@Override
 	public void MouseDown(GuiObject button, int x, int y) {
 	}
+
 
 	@Override
 	public void MouseUp(GuiObject button, int x, int y) {
 	}
 
+
 	@Override
 	public void MouseMove(GuiObject button, int x, int y) {
 	}
-	
+
+        /**
+        * onWindowShown is the method used to set up the window handling event
+        */
 	@Override
 	public void onWindowShown() {
 		ButtonClicked(leftPanel.GetChild("Accounts"), 0, 0);

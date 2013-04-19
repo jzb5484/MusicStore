@@ -37,31 +37,57 @@ public class Driver {
 	//create the User for the current user that is logged in
 	public static User CurrentUser;
 
+	/*
+	 * Returns the GuiMain (window).
+	 */
 	public static GuiMain GetGuiMain() {
+		//POST: Main will be returned.
 		return Main;
 	}
 
+	/*
+	 * Creates the login window.
+	 */
 	private static void EstablishLogin() {
+		// POST: Two object variables will be initialized.
 		LoginEventsObj = new LoginEvents();
 		LoginFrame = (Frame) ((LoginEvents) LoginEventsObj).MainFrame;
 	}
 
+	/*
+	 * Create the library window.
+	 */
 	public static void EstablishLibrary() {
+		// POST: Two object variables will be initialized.
 		LibraryEventsObj = new LibraryEvents();
 		LibraryFrame = (Frame) ((LibraryEvents) LibraryEventsObj).MainFrame;
 	}
 
+	/*
+	 * Creates the management window.
+	 */
 	public static void EstablishManagement() {
+		// POST: Two object variables will be initialized.
 		ManagementEventsObj = new ManagementEvents();
 		ManagementFrame = (Frame) ((ManagementEvents) ManagementEventsObj).MainFrame;
 	}
 
+	/*
+	 * Establishes registry window.
+	 */
 	public static void EstablishRegister() {
+		// POST: Two object variables will be initialized
 		RegisterEventsObj = new RegisterEvents();
 		RegisterFrame = (Frame) ((RegisterEvents) RegisterEventsObj).MainFrame;
 	}
 
+	/*
+	 * Set the current active frame.
+	 * @param s The current frame. Could be "Login", "Library", "Management", "Register".
+	 */
 	public static void SetFrame(String s) {
+		// PRE: s is a string, Main is set.
+		// POST: The current window will be changed.
 		switch (s) {
 			case "Login":
 				Main.SetMain(LoginFrame);
@@ -98,7 +124,11 @@ public class Driver {
 		Main.GetTextBoxes();
 	}
 
+	/*
+	 * Startup function.
+	 */
 	public static void main(String[] args) {
+		// Post: All init functions will be called. The main screen that will be shown is Login.
 		DataLoader.loadFromFile();
 		Main = new GuiMain("Login Screen");
 

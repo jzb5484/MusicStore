@@ -23,6 +23,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	public Item CurrentPlayingItem = null;
 	private int CurrentRatingId;
 
+	/*
+	 * Initialize the library frame.
+	 */
 	public final void MakeElements() {
 		Color ColorScheme = Driver.ColorScheme;
 		MainFrame = new Frame("Library", new DPair(0, 0, 0, 0), new DPair(1, 0, 1, 0), ColorExtension.Lighten(ColorScheme, 1), null);
@@ -103,6 +106,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		new TextButton("0star", new DPair(0, 3, 0, 123), new DPair(1, -6, 0, 17), Driver.ColorScheme, RatingWindow, "n/a", 12);
 	}
 
+	/*
+	 * Set the data elements for the edit-item frame.
+	 */
 	private int CurrentModifyWindowId = 0;
 	private void SetModify(int itemIndex) {
 		Item current = DataLoader.getItemById(itemIndex);
@@ -125,7 +131,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		}
 	}
 	
-	
+
 	private int CurrentList = 1; // 0 means user's library, 1 means albums, 2 means audiobooks, 3 means films
 	private int PixelOffset = 0; // How many pixels offset the 
 	private int ViewIndex = 0; // determines which index represents the top most box in the scroll list
@@ -134,6 +140,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	private final int LIST_ELEMENT_HEIGHT = 55;
 	private final int LIST_ELEMENT_SPACING = 5;
 	
+	/*
+	 * Add a list element to the scrolling list.
+	 */
 	private void AddListElement() {
 		// ScrollList should never exceed the number of elements in the current list.
 		Frame newFrame = new Frame("ScrollList" + ScrollList.size(), new DPair(0, 0, 0, 0), new DPair(1, 0, 0, LIST_ELEMENT_HEIGHT), Driver.ColorScheme, CenterScrollFrame);
@@ -145,6 +154,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		ScrollList.add(newFrame);
 	}
 
+	/*
+	 * Set the text of a single list element.
+	 */
 	private void SetListText(TextLabel rowOne, TextLabel rowTwo, Item currentItem) {
 		if (currentItem instanceof Album) {
 			rowOne.SetText(String.format("Artist: %s; Album: %s", currentItem.getCreator(), currentItem.getName()));
@@ -158,6 +170,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		}
 	}
 	
+	/*
+	 * Get the item ID that corresponds to a list frame.
+	 */
 	private int GetItemIdOfFrame(Frame frame) {
 		PixelOffset = (int) LibScroll.GetValue();
 		ViewIndex = (int) Math.floor((double) PixelOffset / (LIST_ELEMENT_HEIGHT + LIST_ELEMENT_SPACING));
@@ -172,6 +187,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 
 	private ArrayList ActiveList = new ArrayList();
 	private int LastCurrentListValue = 0;
+	/*
+	 * Update the scrolling frames.
+	 */
 	private void SetFrames() {
 		AccountCredit.SetText(String.format("Credit: $%.2f", Driver.CurrentUser.getCredit()));
 		Frame current;
@@ -282,16 +300,25 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		}
 	}
 
+	/*
+	 * Constructor. Create the frame and set all the scrolling frames, too.
+	 */
 	public LibraryEvents() {
 		int WindowHeight = Driver.GetGuiMain().GetWindow().getSize().height;
 		MakeElements();
 		int NumberOfFrames = (int) ((double) WindowHeight / (LIST_ELEMENT_HEIGHT));
 //		System.out.println("Height of window: " + WindowHeight);
-		for (int i = 0; i < 12; i++) { // number of scrolling frames is determined by height of window or number of albums to display.
+		for (int i = 0; i < 18; i++) { // number of scrolling frames is determined by height of window or number of albums to display.
 			AddListElement();
 		}
 	}
 
+	/**
+	 * Fires when any button in the frame is clicked.
+	 * @param button The button.
+	 * @param x The x location of the mouse (relative to the screen)
+	 * @param y Same but for y.
+	 */
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
 		System.out.println("Button Clicked: " + button.GetName());
@@ -477,6 +504,9 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		if (!(button instanceof TextBox)) {Driver.GetGuiMain().GetTextBoxes();}
 	}
 
+	/**
+	 * Fires when the window appears.
+	 */
 	@Override public void onWindowShown() {
 		if (!Driver.CurrentUser.getAdministrator()) {
 			ManagementButton.SetParent(null);
@@ -494,18 +524,25 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		SetFrames();
 	}
 	@Override public void onWindowHide() {	}
+	/**
+	 * Whenever the window resizes, function will change the frames that are visible.
+	 */
 	@Override public void onWindowResize() {
 		SetFrames();
 	}
 	
 	@Override
-	public void MouseDown(GuiObject button, int x, int y) {
-	}
+	public void MouseDown(GuiObject button, int x, int y) {}
 
 	@Override
-	public void MouseUp(GuiObject button, int x, int y) {
-	}
+	public void MouseUp(GuiObject button, int x, int y) {}
 
+	/**
+	 * Every time the mouse moves, change the visible frames in the scroll list.
+	 * @param button The button over which the mouse is.
+	 * @param x THe x location of the mouse on the screen.
+	 * @param y Same but for y.
+	 */
 	@Override
 	public void MouseMove(GuiObject button, int x, int y) {
 		SetFrames();

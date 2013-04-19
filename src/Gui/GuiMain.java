@@ -13,6 +13,9 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * This class is the GuiMain class that is used to set up the main gui.
+ */
 public class GuiMain extends JPanel implements MouseListener, MouseMotionListener {
 	private GuiObject Main;
 	private EventImplementation EventI;
@@ -21,7 +24,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	private int DragOffsetY;
 	private float OriginalScrollValue;
 	private JFrame Window;
-	
+
 
 	private ArrayList<GuiObject> Buttons;
 //	private ArrayList<GuiObject> TextBoxes;
@@ -29,8 +32,8 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 
 	@Override
 	public void paintComponent(Graphics g) { 
-		int width = getWidth();
-		int height = getHeight();
+		int width = getWidth();                 // get a width
+		int height = getHeight();               // get a height
 		super.paintComponent(g);
 		if (Main != null) {
 			Main.draw(g, 0, 0, width, height);
@@ -38,7 +41,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 	}
 
 	@Override
-	public Component add(Component comp) {
+	public Component add(Component comp) {          // add components in gui
 		return super.add(comp);
 	}
 	
@@ -49,17 +52,17 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		Buttons = new ArrayList();
 //		TextBoxes = new ArrayList();
 		
-		application.setTitle(title);
+		application.setTitle(title);            // set a title
 		application.add(this);
 
-		application.setSize(640, 480);
+		application.setSize(640, 480);          // set size
 		application.setVisible(true);
 		
 		borderWidth = application.getInsets();
-		application.addMouseListener(this);
+		application.addMouseListener(this);     // add mouselistener
 		application.addMouseMotionListener(this);
 //		application.addWindowStateListener(null);
-		application.addWindowListener(new WindowListener() {
+		application.addWindowListener(new WindowListener() {        // window listener
 			@Override public void windowDeactivated(WindowEvent e) {}
 			@Override public void windowActivated(WindowEvent e) {}
 			@Override public void windowDeiconified(WindowEvent e) {}
@@ -72,18 +75,18 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		GetTextBoxes(Main);
 	}
 	
-	public void SetMain(GuiObject main) {Main = main; if (main != null) {main.SetMain(this);}}
-	public void SetEventImplementation(EventImplementation e) {EventI = e;}
-	public void SetTitle(String name) {Window.setTitle(name);}
+	public void SetMain(GuiObject main) {Main = main; if (main != null) {main.SetMain(this);}}  // set a main
+	public void SetEventImplementation(EventImplementation e) {EventI = e;}     // set the event
+	public void SetTitle(String name) {Window.setTitle(name);}          // set a title
 
 	public GuiObject GetMain() {return Main;}
 	public JFrame GetWindow() {return Window;}
 	public EventImplementation GetEventImplementation() {return EventI;}
 	public String GetTitle() {return Window.getTitle();}
 	
-	private void GetTextBoxes(GuiObject Root) {
+	private void GetTextBoxes(GuiObject Root) {     // add buttons, scroll bar, checkbox, radiobutton
 		if (Root == null) { return; }
-		if (Root.Visible) {
+		if (Root.Visible) { 
 			if (Root instanceof TextButton && !Buttons.contains(Root)) {
 				this.Buttons.add(Root);
 			} else if (Root instanceof TextBox) {
@@ -102,7 +105,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 			GetTextBoxes(i.next());
 		}
 	}
-	public void GetTextBoxes() {
+	public void GetTextBoxes() {        // add the text box
 		for (GuiObject i : Buttons) {
 			if (i instanceof TextBox) {
 				((TextBox) i).Clean(this);
@@ -111,8 +114,12 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		Buttons.clear();
 		GetTextBoxes(Main);
 	}
-	
-	private GuiObject GetButtonAtCoordinates(int x, int y) {
+        /**
+        * GetButtonAtCoordinates is the method that get the position of the buttons
+        * @param x is the coordinate of x
+        * @param y is the coordinate of y
+        */
+	private GuiObject GetButtonAtCoordinates(int x, int y) {    
 		GuiObject hit;
 		Iterator<GuiObject> i = Buttons.iterator();
 		while (i.hasNext()) {
@@ -126,6 +133,7 @@ public class GuiMain extends JPanel implements MouseListener, MouseMotionListene
 		return null;
 	}
 	
+        // mouse handling event
 	@Override
 	public void mouseExited(MouseEvent e) {}
 	@Override
