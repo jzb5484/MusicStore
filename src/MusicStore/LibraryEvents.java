@@ -179,7 +179,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		int id = ViewIndex + ScrollList.indexOf(frame);
 		if (CurrentList == 0) {
 			return (int) ActiveList.get(id);
-		} else if (CurrentList >= 1 && CurrentList <= 4) {
+		} else if (CurrentList >= 1 && CurrentList <= 5) {
 			return (int) ((Item) ActiveList.get(id)).getId();
 		}
 		return 0;
@@ -321,7 +321,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	 */
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
-		System.out.println("Button Clicked: " + button.GetName());
+//		System.out.println("Button Clicked: " + button.GetName());
 		switch (button.GetName()) {
 			case "LibraryButton":
 				CurrentList = 0;
@@ -352,11 +352,11 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				}
 				break;
 			case "Action":
-				System.out.println("Buy or Play button Pressed.");
+//				System.out.println("Buy or Play button Pressed.");
 				// "Buy" or "Play" button pressed.
-				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Buy") && CurrentList >= 1 && CurrentList <= 4) {
+				if (button instanceof TextButton && ((TextButton) button).GetText().equals("Buy") && CurrentList >= 1 && CurrentList <= 5) {
 					int id = GetItemIdOfFrame((Frame) button.GetParent());
-					System.out.println("Pressed buy for item: " + id);
+//					System.out.println("Pressed buy for item: " + id);
 					boolean success = Driver.CurrentUser.purchaseItem(id);
 					if (success) {
 						((TextButton) button).SetText("Play");
@@ -371,7 +371,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Stop") && CurrentPlayingItem != null) {
 					CurrentPlayingItem.stopAudio();
 					CurrentPlayingItem = null;
-				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Play") && CurrentList >= 1 && CurrentList <= 3) {
+				} else if (button instanceof TextButton && ((TextButton) button).GetText().equals("Play") && CurrentList >= 1 && CurrentList <= 5) {
 					int id = GetItemIdOfFrame((Frame) button.GetParent());
 					CurrentPlayingItem = DataLoader.getItemById(id);
 					CurrentPlayingItem.playAudioPreview();
@@ -469,7 +469,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				Driver.GetGuiMain().GetTextBoxes();
 				break;
 			case "1star":
-				System.out.println("CurrentRatingId: " + CurrentRatingId);
+//				System.out.println("CurrentRatingId: " + CurrentRatingId);
 				Driver.CurrentUser.rateItem(CurrentRatingId, 1);
 				RatingWindow.SetParent(null);
 				Driver.GetGuiMain().GetTextBoxes();

@@ -90,7 +90,6 @@ public class DataLoader {
 	private static Statement SqlStatement;
 
 	public static void loadFromFile() {
-		//Open "Item.txt" and "Users.txt" and then save info
 		System.out.println("Loading...");
 		try {
 			// Create instance of the driver for the database
