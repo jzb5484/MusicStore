@@ -56,10 +56,11 @@ public class TextBox extends GuiObject {
 	public void SetFont(Font newFont) { TextFont = newFont; }
 	
 	public void Clean(GuiMain main) {
+		Text = box.getText();
 		main.remove(box);
 	}
 	private void SetUpBox(JTextField box) {
-		box.setText(Text);
+		if (box.getText()!=Text) {box.setText(Text);}
 		box.setFont(TextFont);
 		box.setBackground(GuiColor);
 		box.setSelectedTextColor(TextColor);

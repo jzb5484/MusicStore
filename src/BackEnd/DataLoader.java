@@ -344,30 +344,38 @@ public class DataLoader {
 		return null;
 	}
 
-	public static Item searchForItemArtist(String artist) {
-		HashMap<Integer, Item> set = DataLoader.itemSet;
+	public static ArrayList<Item> searchForItemArtist(String artist) {
+		artist = artist.toLowerCase(); // Compare everything in the lower case.
+		ArrayList<Item> results = new ArrayList(); // Results set.
+		HashMap<Integer, Item> set = DataLoader.itemSet; // All possible.
 		Set<Integer> iterableSet = set.keySet();
 		Iterator<Integer> i = iterableSet.iterator();
+		String name;
 		while (i.hasNext()) {
 			Item x = set.get(i.next());
-			if (x.getCreator() == artist) {
-				return x;
+			name = x.getCreator().toLowerCase();
+			if (!x.isVisible() && ((artist.indexOf(name) != -1) || (name.indexOf(artist) != -1))) {
+				results.add(x);
 			}
 		}
-		return null;
+		return results;
 	}
 
-	public static Item searchForItemTitle(String title) {
-		HashMap<Integer, Item> set = DataLoader.itemSet;
+	public static ArrayList<Item> searchForItemTitle(String title) {
+		title = title.toLowerCase(); // Compare everything in the lower case.
+		ArrayList<Item> results = new ArrayList(); // Results set.
+		HashMap<Integer, Item> set = DataLoader.itemSet; // All possible.
 		Set<Integer> iterableSet = set.keySet();
 		Iterator<Integer> i = iterableSet.iterator();
+		String name;
 		while (i.hasNext()) {
 			Item x = set.get(i.next());
-			if (x.getName() == title) {
-				return x;
+			name = x.getName().toLowerCase();
+			if (!x.isVisible() && ((title.indexOf(name) != -1) || (name.indexOf(title) != -1))) {
+				results.add(x);
 			}
 		}
-		return null;
+		return results;
 	}
 
 	public static boolean addItemToList(Item newItem) {

@@ -18,6 +18,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 	private Frame CreditAdd;
 	private Frame ModifyItem;
 	private Frame Help;
+	private Frame SearchQuery;
 	private Frame RatingWindow;
 	public Item CurrentPlayingItem = null;
 	private int CurrentRatingId;
@@ -34,11 +35,21 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		new TextButton("ViewAlbums", new DPair(0, 18, 0, 96), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Albums", 14);
 		new TextButton("ViewAudiobooks", new DPair(0, 18, 0, 126), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Audiobooks", 14);
 		new TextButton("ViewFilms", new DPair(0, 18, 0, 156), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Films", 14);
-		ManagementButton = new TextButton("ManagementButton", new DPair(0, 0, 0, 186), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Mgmt Tools", 18);
+		new TextButton("Search", new DPair(0, 18, 0, 186), new DPair(1, -18, 0, 24), ColorScheme, leftPanel, "Search", 14);
+		ManagementButton = new TextButton("ManagementButton", new DPair(0, 0, 0, 216), new DPair(1, -18, 0, 36), ColorScheme, leftPanel, "Mgmt Tools", 18);
 		AccountCredit = new TextButton("AccountCredit", new DPair(0, 0, 1, -30), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Credit: $25.00", 14);
 		new TextButton("Help", new DPair(0, 0, 1, -60), new DPair(1, 0, 0, 24), ColorScheme, leftPanel, "Help", 14);
 		CenterScrollFrame = new Frame("CenterFrame", new DPair(0, leftPanel.GetSize().xOffset + 10, 0, 10), new DPair(1, -leftPanel.GetSize().xOffset - 50, 1, -20), Color.WHITE, MainFrame);
 		LibScroll = new ScrollBar("Scroll", new DPair(1, -30, 0, 10), new DPair(0, 20, 1, -20), ColorScheme, MainFrame, 2000, 200);
+		
+		SearchQuery = new Frame("SearchFrame", new DPair(.5, -100, .5, -50), new DPair(0, 200, 0, 100), ColorScheme, null);
+		new Frame("InsideBorder", new DPair(0, 2, 0, 2), new DPair(1, -4, 1, -4), Color.WHITE, SearchQuery);
+		new TextLabel("RequestLabel", new DPair(0, 4, 0, 4), new DPair(1, -8, 0, 20), Color.WHITE, SearchQuery, "Search for element.", 12).SetTextColor(Driver.ColorScheme);
+		new TextBox("SearchText", new DPair(0, 4, 0, 28), new DPair(1, -8, 0, 20), Color.WHITE, SearchQuery, "Search Query", 14, Color.BLACK);
+		new RadioButton("Artist", new DPair(0, 2, 0, 50), new DPair(.5, -3, 0, 20), ColorScheme, SearchQuery, "Search Artist", 12).SetSelected(true);
+		new RadioButton("Title", new DPair(.5, 1, 0, 50), new DPair(.5, -3, 0, 20), ColorScheme, SearchQuery, "Search Title", 12);
+		new TextButton("SearchButton", new DPair(.5, -20, 1, -24), new DPair(0, 40, 0, 20), Driver.ColorScheme, SearchQuery,  "OK", 14);
+		
 		
 		CreditAdd = new Frame("CreditAdd", new DPair(.5, -100, .5, -40), new DPair(0, 200, 0, 80), ColorScheme, null);
 		new Frame("InsideBorder", new DPair(0, 2, 0, 2), new DPair(1, -4, 1, -4), Color.WHITE, CreditAdd);
@@ -169,7 +180,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 		TextButton commandButton;
 		if (LastCurrentListValue != CurrentList) {
 			ArrayList temporaryList = null;
-			ActiveList.clear();
+			if (CurrentList != 5) {ActiveList.clear();}
 			if (CurrentList == 0) {temporaryList = Driver.CurrentUser.getPurchaseHistory();}
 			else if (CurrentList == 1) {temporaryList = DataLoader.getAlbums();}
 			else if (CurrentList == 2) {temporaryList = DataLoader.getAudiobooks();}
@@ -247,7 +258,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 					} else {
 						commandButton.SetText("Play");
 					}
-				} else if (CurrentList >= 1 && CurrentList <= 4) {
+				} else if (CurrentList >= 1 && CurrentList <= 5) {
 					if (current.GetChild("Action2").GetVisible() && !Driver.CurrentUser.getAdministrator()) {
 						current.GetChild("Divider").GetPosition().xOffset = -52;
 						current.GetChild("TopText").GetSize().xOffset = -58;
@@ -283,6 +294,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 
 	@Override
 	public void ButtonClicked(GuiObject button, int x, int y) {
+		System.out.println("Button Clicked: " + button.GetName());
 		switch (button.GetName()) {
 			case "LibraryButton":
 				CurrentList = 0;
@@ -298,6 +310,11 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				break;
 			case "ViewFilms":
 				CurrentList = 3;
+				break;
+			case "Search":
+				MainFrame.AddChild(SearchQuery);
+				MainFrame.RemoveChild(CreditAdd);
+				Driver.GetGuiMain().GetTextBoxes();
 				break;
 			case "ManagementButton":
 				currentUser = Driver.CurrentUser;
@@ -336,6 +353,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				break;
 			case "AccountCredit":
 				MainFrame.AddChild(CreditAdd);
+				MainFrame.RemoveChild(SearchQuery);
 				Driver.GetGuiMain().GetTextBoxes();
 				break;
 			case "CreditAdd":
@@ -349,6 +367,26 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				break;
 			case "Input":
 				if (button instanceof TextBox && ((TextBox) button).GetText().equals("Credit")) {
+					((TextBox) button).SetText("");
+				}
+				break;
+			case "SearchButton":
+				String SearchText = ((TextBox) SearchQuery.GetChild("SearchText")).GetText();
+				CurrentList = 5;
+				ArrayList<Item> temporaryList;
+				if (((RadioButton) SearchQuery.GetChild("Artist")).GetSelected()) {
+					temporaryList = DataLoader.searchForItemArtist(SearchText);
+				} else {
+					temporaryList = DataLoader.searchForItemTitle(SearchText);
+				}
+				ActiveList.clear();
+				for (Item i : temporaryList) {
+					ActiveList.add(i);
+				}
+				MainFrame.RemoveChild(SearchQuery);
+				break;
+			case "SearchText":
+				if (button instanceof TextBox && ((TextBox) button).GetText().equals("Search Query")) {
 					((TextBox) button).SetText("");
 				}
 				break;
@@ -436,7 +474,7 @@ public class LibraryEvents implements Gui.EventImplementation, Gui.WindowEvents 
 				break;
 		}
 		SetFrames();
-		Driver.GetGuiMain().GetTextBoxes();
+		if (!(button instanceof TextBox)) {Driver.GetGuiMain().GetTextBoxes();}
 	}
 
 	@Override public void onWindowShown() {
