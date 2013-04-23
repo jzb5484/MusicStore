@@ -33,9 +33,6 @@ insert into users
 insert into users
 	(username, password, billing_name, address, credit, administrator, purchase_history, ratings) values
 	('new user', 'password', 'name', 'address', 30.00, false, '1', '0'); --Starts with one purchased album
-insert into users
-	(username, password, billing_name, address, credit, administrator, purchase_history, ratings) values
-	('Username', 'Password', 'name', 'address', 30.00, false, '', '');
 insert into items
 	(id, item_type, item_name, year_of_release, duration, genre, price, creator) values
 	(1, 'Album', 'Congratulations', 2012, 3600, 'Synth Rock', 10, 'MGMT');
